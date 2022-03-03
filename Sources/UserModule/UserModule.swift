@@ -6,7 +6,8 @@
 //
 
 @_exported import Feather
-@_exported import UserRestKit
+@_exported import FeatherApi
+@_exported import UserApi
 
 
 struct UserModule: FeatherModule {

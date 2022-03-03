@@ -5,6 +5,6 @@
 //  Created by Tibor Bodecs on 2021. 12. 26..
 //
 
-import FeatherRestKit
+import FeatherApi
 
 public enum User: FeatherApiModule {}

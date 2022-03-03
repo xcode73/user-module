@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import FeatherRestKit
+import FeatherApi
 
 public extension User {
 

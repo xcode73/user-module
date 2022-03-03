@@ -5,7 +5,7 @@
 //  Created by Tibor Bodecs on 2021. 12. 19..
 //
 
-import FeatherRestKit
+import FeatherApi
 
 struct UserAccountTokenAuthenticator: AsyncBearerAuthenticator {
 

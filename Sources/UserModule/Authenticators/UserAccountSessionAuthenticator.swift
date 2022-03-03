@@ -5,7 +5,7 @@
 //  Created by Tibor Bodecs on 2021. 11. 24..
 //
 
-import FeatherRestKit
+import FeatherApi
 
 struct UserAccountSessionAuthenticator: AsyncSessionAuthenticator {
     typealias User = FeatherUser

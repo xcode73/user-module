@@ -8,11 +8,12 @@ let package = Package(
     ],
     products: [
         .library(name: "UserModule", targets: ["UserModule"]),
-        .library(name: "UserRestKit", targets: ["UserRestKit"]),
+        .library(name: "UserApi", targets: ["UserApi"]),
     ],
     dependencies: [
 //        .package(url: "https://github.com/feathercms/feather-core", .branch("dev")),
         .package(path: "../feather-core"),
+        .package(path: "../feather-api"),
         .package(url: "https://github.com/vapor/fluent-sqlite-driver", from: "4.0.0"),
         .package(url: "https://github.com/binarybirds/liquid-local-driver", from: "1.3.0"),
         .package(url: "https://github.com/binarybirds/mail-aws-driver", from: "0.0.1"),
@@ -28,14 +29,15 @@ let package = Package(
         ]),
         .target(name: "UserModule",
                 dependencies: [
-                    .target(name: "UserRestKit"),
+                    .target(name: "UserApi"),
+                    .product(name: "FeatherApi", package: "feather-api"),
                     .product(name: "Feather", package: "feather-core"),
                 ],
                 resources: [
                     .copy("Bundle"),
                 ]),
-        .target(name: "UserRestKit", dependencies: [
-            .product(name: "FeatherRestKit", package: "feather-core"),
+        .target(name: "UserApi", dependencies: [
+            .product(name: "FeatherApi", package: "feather-api"),
         ]),
     ]
 )
