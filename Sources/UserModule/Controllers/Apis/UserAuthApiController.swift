@@ -5,7 +5,6 @@
 //  Created by Tibor Bodecs on 2022. 02. 28..
 //
 
-
 extension User.Auth.Response: Content {}
 
 struct UserAuthApiController: AuthController {
@@ -91,16 +90,13 @@ struct UserAuthApiController: AuthController {
         guard try await resetPasswordAccess(req) else {
             throw Abort(.forbidden)
         }
-        struct Input: Codable {
-            let email: String
-        }
-                
+
         try await RequestValidator([
             KeyedContentValidator<String>.required("email"),
             KeyedContentValidator<String>.email("email"),
         ]).validate(req)
-        
-        let input = try req.content.decode(Input.self)
+
+        let input = try req.content.decode(User.Auth.ResetPasswordRequest.self)
         try await createResetPasswordModel(for: input.email, req: req)
         return .ok
     }
@@ -109,18 +105,13 @@ struct UserAuthApiController: AuthController {
         guard try await newPasswordAccess(req) else {
             throw Abort(.forbidden)
         }
-
-        struct Input: Codable {
-            let token: String
-            let password: String
-        }
-        
+       
         try await RequestValidator([
             KeyedContentValidator<String>.required("token"),
             KeyedContentValidator<String>.required("password"),
         ]).validate(req)
         
-        let input = try req.content.decode(Input.self)
+        let input = try req.content.decode(User.Auth.NewPasswordRequest.self)
         try await setNewPassword(input.password, input.token, req)
         return .ok
     }

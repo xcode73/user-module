@@ -54,6 +54,8 @@ extension AuthController {
                                          expiration: Date().addingTimeInterval(86_400)) // one day
 
         try await model.create(on: req.db)
+        
+        // systemDeepLinkScheme
 
         let html = """
             <h1>\(user.email)</h1>
