@@ -123,7 +123,7 @@ struct UserModule: FeatherModule {
         ]
     }
     
-    func installUserPermissionsHook(args: HookArguments) -> [System.Permission.Create] {
+    func installUserPermissionsHook(args: HookArguments) -> [FeatherApi.System.Permission.Create] {
         var permissions = User.availablePermissions()
         permissions += User.Account.availablePermissions()
         permissions += User.Permission.availablePermissions()
