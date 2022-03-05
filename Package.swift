@@ -8,11 +8,11 @@ let package = Package(
     ],
     products: [
         .library(name: "UserModule", targets: ["UserModule"]),
-        .library(name: "UserApi", targets: ["UserApi"]),
     ],
     dependencies: [
         .package(url: "https://github.com/feathercms/feather-core", .branch("dev")),
-        .package(url: "https://github.com/feathercms/feather-api", .branch("dev")),
+        .package(url: "https://github.com/feathercms/feather-api", .branch("main")),
+        .package(url: "https://github.com/feathercms/user-api", .branch("main")),
 //        .package(path: "../feather-core"),
 //        .package(path: "../feather-api"),
         .package(url: "https://github.com/vapor/fluent-sqlite-driver", from: "4.0.0"),
@@ -30,15 +30,13 @@ let package = Package(
         ]),
         .target(name: "UserModule",
                 dependencies: [
-                    .target(name: "UserApi"),
+                    
                     .product(name: "FeatherApi", package: "feather-api"),
+                    .product(name: "UserApi", package: "user-api"),
                     .product(name: "Feather", package: "feather-core"),
                 ],
                 resources: [
                     .copy("Bundle"),
                 ]),
-        .target(name: "UserApi", dependencies: [
-            .product(name: "FeatherApi", package: "feather-api"),
-        ]),
     ]
 )
