@@ -43,7 +43,6 @@ struct UserAuthApiController: AuthController {
         
         let input = try req.content.decode(Input.self)
         
-        
         guard
             let model = try await req.user.account.repository.find(input.email),
             let isValid = try? Bcrypt.verify(input.password, created: model.password),
