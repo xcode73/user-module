@@ -5,6 +5,8 @@
 //  Created by Tibor Bodecs on 2022. 02. 28..
 //
 
+import Vapor
+import Feather
 import SwiftHtml
 
 final class UserRegisterTemplate: AbstractTemplate<UserRegisterContext> {

@@ -5,6 +5,10 @@
 //  Created by Tibor Bodecs on 2022. 03. 01..
 //
 
+import Vapor
+import Fluent
+import Feather
+import Mail
 
 protocol AuthController {
     

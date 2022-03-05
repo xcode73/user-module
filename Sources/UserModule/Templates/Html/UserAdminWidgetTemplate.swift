@@ -5,8 +5,11 @@
 //  Created by Tibor Bodecs on 2021. 12. 01..
 //
 
+import Vapor
+import Feather
 import SwiftHtml
 import FeatherIcons
+import UserApi
 
 struct UserAdminWidgetTemplate: TemplateRepresentable {
     

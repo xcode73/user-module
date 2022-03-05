@@ -5,6 +5,9 @@
 //  Created by Tibor Bodecs on 2022. 02. 28..
 //
 
+import Vapor
+import Feather
+
 final class UserNewPasswordForm: AbstractForm {
 
     var password: String = ""

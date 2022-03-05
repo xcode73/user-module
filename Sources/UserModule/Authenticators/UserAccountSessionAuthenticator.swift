@@ -5,7 +5,10 @@
 //  Created by Tibor Bodecs on 2021. 11. 24..
 //
 
+import Vapor
+import Feather
 import FeatherApi
+import UserApi
 
 struct UserAccountSessionAuthenticator: AsyncSessionAuthenticator {
     typealias User = FeatherUser

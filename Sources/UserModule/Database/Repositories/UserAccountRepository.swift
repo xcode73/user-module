@@ -5,6 +5,10 @@
 //  Created by Tibor Bodecs on 2022. 02. 24..
 //
 
+import Vapor
+import Fluent
+import Feather
+
 struct UserAccountRepository: FeatherModelRepository {
     typealias DatabaseModel = UserAccountModel
 

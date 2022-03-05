@@ -5,6 +5,9 @@
 //  Created by Tibor Bodecs on 2022. 02. 28..
 //
 
+import Feather
+import Fluent
+
 final class UserResetPasswordModel: FeatherDatabaseModel {
     typealias Module = UserModule
     

@@ -5,6 +5,8 @@
 //  Created by Tibor Bodecs on 2021. 11. 24..
 //
 
+import Fluent
+
 struct UserAccountModelMiddleware: AsyncModelMiddleware {
     
     func create(model: UserAccountModel, on db: Database, next: AnyAsyncModelResponder) async throws {

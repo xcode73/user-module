@@ -5,6 +5,12 @@
 //  Created by Tibor Bodecs on 2021. 11. 27..
 //
 
+import Feather
+import Vapor
+import Fluent
+import FeatherApi
+import UserApi
+
 extension User.Token.Detail: Content {}
 
 struct UserAuthController: AuthController {

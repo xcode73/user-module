@@ -5,7 +5,10 @@
 //  Created by Tibor Bodecs on 2022. 03. 04..
 //
 
+import Vapor
 import Feather
+import FeatherApi
+import UserApi
 
 struct UserProfileAdminController: AdminDetailController, AdminUpdateController {
     

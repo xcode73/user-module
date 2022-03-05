@@ -5,6 +5,9 @@
 //  Created by Tibor Bodecs on 2022. 02. 28..
 //
 
+import Vapor
+import Feather
+
 final class UserRegisterForm: AbstractForm {
     
     var imageKey: String?

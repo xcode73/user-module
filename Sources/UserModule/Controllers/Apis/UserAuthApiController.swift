@@ -5,6 +5,11 @@
 //  Created by Tibor Bodecs on 2022. 02. 28..
 //
 
+import Vapor
+import Feather
+import FeatherApi
+import UserApi
+
 extension User.Auth.Response: Content {}
 
 struct UserAuthApiController: AuthController {

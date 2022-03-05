@@ -5,6 +5,10 @@
 //  Created by Tibor Bodecs on 2021. 11. 23..
 //
 
+import Vapor
+import Feather
+import UserApi
+
 struct UserRouter: FeatherRouter {
     
     let authController = UserAuthController()

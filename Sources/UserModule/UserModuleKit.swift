@@ -5,7 +5,9 @@
 //  Created by Tibor Bodecs on 2022. 02. 23..
 //
 
+import Vapor
 import Feather
+
 
 public extension HookName {
     static let installUserRoles: HookName = "install-user-roles"

@@ -5,6 +5,9 @@
 //  Created by Tibor Bodecs on 2021. 11. 24..
 //
 
+import Feather
+import Fluent
+
 final class UserAccountRoleModel: FeatherDatabaseModel {
     typealias Module = UserModule
     

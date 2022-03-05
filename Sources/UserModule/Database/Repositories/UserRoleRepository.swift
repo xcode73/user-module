@@ -5,6 +5,11 @@
 //  Created by Tibor Bodecs on 2022. 02. 28..
 //
 
+import Feather
+import Vapor
+import Fluent
+import FeatherApi
+
 struct UserRoleRepository: FeatherModelRepository {
     typealias DatabaseModel = UserRoleModel
     

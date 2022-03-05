@@ -5,10 +5,11 @@
 //  Created by Tibor Bodecs on 2021. 11. 23..
 //
 
-@_exported import Feather
-@_exported import FeatherApi
-@_exported import UserApi
-
+import Vapor
+import Fluent
+import Feather
+import FeatherApi
+import UserApi
 
 struct UserModule: FeatherModule {
     
@@ -123,7 +124,7 @@ struct UserModule: FeatherModule {
         ]
     }
     
-    func installUserPermissionsHook(args: HookArguments) -> [FeatherApi.System.Permission.Create] {
+    func installUserPermissionsHook(args: HookArguments) -> [FeatherPermission.Create] {
         var permissions = User.availablePermissions()
         permissions += User.Account.availablePermissions()
         permissions += User.Permission.availablePermissions()
