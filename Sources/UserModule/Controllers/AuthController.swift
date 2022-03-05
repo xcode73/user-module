@@ -57,14 +57,14 @@ extension AuthController {
         
         // TODO: check if has suffix
         var baseUrl = req.feather.baseUrl + "/"
-        if let scheme = req.variable("systemDeepLinkScheme") {
+        if let scheme = try await req.system.variable.find("systemDeepLinkScheme")?.value {
             baseUrl = scheme + "://"
         }
 
         let html = """
             <h1>\(user.email)</h1>
             <p>\(model.token)</p>
-            <a href="\(baseUrl)/new-password?token=\(model.token)">Password reset link</a>
+            <a href="\(baseUrl)new-password?token=\(model.token)">Password reset link</a>
         """
 
         _ = try await req.mail.send(.init(from: "noreply@feathercms.com",
