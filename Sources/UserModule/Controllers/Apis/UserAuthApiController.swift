@@ -6,11 +6,7 @@
 //
 
 
-struct UserLoginResponse: Codable, Content {
-    let user: FeatherUser
-    let account: User.Account.Detail
-    let token: User.Token.Detail
-}
+extension User.Auth.Response: Content {}
 
 struct UserAuthApiController: AuthController {
 
@@ -27,7 +23,7 @@ struct UserAuthApiController: AuthController {
         return account
     }
     
-    func loginApi(req: Request) async throws -> UserLoginResponse {
+    func loginApi(req: Request) async throws -> User.Auth.Response {
         guard let guest = req.auth.get(FeatherUser.self), guest.level == .guest else {
             throw Abort(.forbidden)
         }
@@ -72,9 +68,9 @@ struct UserAuthApiController: AuthController {
             throw Abort(.notFound)
         }
 
-        return UserLoginResponse(user: user,
-                          account: account,
-                          token: .init(id: token.uuid, value: token.value, expiration: token.expiration))
+        return .init(user: user,
+                     account: account,
+                     token: .init(id: token.uuid, value: token.value, expiration: token.expiration))
     }
     
     func registerApi(req: Request) async throws -> User.Account.Detail {

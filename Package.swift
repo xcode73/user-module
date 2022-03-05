@@ -36,7 +36,7 @@ let package = Package(
                     .product(name: "Feather", package: "feather-core"),
                 ],
                 resources: [
-                    .copy("Bundle"),
+//                    .copy("Bundle"),
                 ]),
     ]
 )
