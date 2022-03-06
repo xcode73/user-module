@@ -32,6 +32,7 @@ struct UserModule: FeatherModule {
         app.hooks.register(.installUserRolePermissions, use: installRolePermissionsHook)
         app.hooks.register(.installPermissions, use: installUserPermissionsHook)
         app.hooks.register(.installStep, use: installStepHook)
+        app.hooks.register(.installMenuItems, use: installMenuItemsHook)
 
         app.hooks.registerAsync(.install, use: installHook)
         app.hooks.registerAsync(.installResponse, use: installResponseHook)
@@ -198,6 +199,17 @@ struct UserModule: FeatherModule {
             ]
         }
         return []
+    }
+    
+    func installMenuItemsHook(args: HookArguments) -> [FeatherMenuItem] {
+        guard let key = args["menu-key"] as? String, key == "footer-account" else {
+            return []
+        }
+        return [
+            .init(label: "Admin", url: "/admin/", priority: 100, permission: "system.module.detail"),
+            .init(label: "Sign in", url: "/login/", priority: 90, permission: "user.profile.login"),
+            .init(label: "Sign out", url: "/logout/", priority: 90, permission: "user.profile.logout"),
+        ]
     }
 }
 
