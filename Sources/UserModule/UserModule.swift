@@ -19,15 +19,20 @@ struct UserModule: FeatherModule {
         app.migrations.add(UserMigrations.v1())
         app.databases.middleware.use(UserAccountModelMiddleware())
         
+        app.hooks.register(.adminWidgets, use: adminWidgetsHook)
+        
         app.hooks.register(.webMiddlewares, use: webMiddlewaresHook)
         app.hooks.register(.adminMiddlewares, use: adminMiddlewaresHook)
-        app.hooks.register(.adminWidgets, use: adminWidgetsHook)
         app.hooks.register(.apiMiddlewares, use: apiMiddlewaresHook)
+
         app.hooks.register(.permission, use: permissionHook)
+        app.hooks.register(.loginPath, use: loginPathHook)
+        
         app.hooks.register(.webRoutes, use: router.webRoutesHook)
         app.hooks.register(.adminRoutes, use: router.adminRoutesHook)
         app.hooks.register(.apiRoutes, use: router.apiRoutesHook)
         app.hooks.register(.publicApiRoutes, use: router.publicApiRoutesHook)
+        
         app.hooks.register(.installUserRoles, use: installUserRolesHook)
         app.hooks.register(.installUserRolePermissions, use: installRolePermissionsHook)
         app.hooks.register(.installPermissions, use: installUserPermissionsHook)
@@ -200,7 +205,11 @@ struct UserModule: FeatherModule {
         }
         return []
     }
-    
+
+    func loginPathHook(args: HookArguments) -> String {
+        "/login/?redirect=/admin/"
+    }
+
     func installMenuItemsHook(args: HookArguments) -> [FeatherMenuItem] {
         guard let key = args["menu-key"] as? String, key == "footer-account" else {
             return []
