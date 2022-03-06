@@ -5,6 +5,7 @@
 //  Created by Tibor Bodecs on 2021. 11. 24..
 //
 
+import Foundation
 import Fluent
 import Feather
 
