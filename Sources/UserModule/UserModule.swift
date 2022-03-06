@@ -169,6 +169,9 @@ struct UserModule: FeatherModule {
         guard let user = args.req.auth.get(FeatherUser.self) else {
             return false
         }
+        if user.hasRole("authenticated") && args.permission.key == "user.profile.login" {
+            return false
+        }
         return user.hasPermission(args.permission)
     }
     
@@ -197,3 +200,15 @@ struct UserModule: FeatherModule {
         return []
     }
 }
+
+//extension FeatherPermission: CustomDebugStringConvertible {
+//    public var debugDescription: String {
+//        key
+//    }
+//}
+//
+//extension FeatherRole: CustomDebugStringConvertible {
+//    public var debugDescription: String {
+//        key + ": [" + permissions.map(\.debugDescription).joined(separator: ", ") + "]"
+//    }
+//}
