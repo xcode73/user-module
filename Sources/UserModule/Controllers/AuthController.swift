@@ -60,7 +60,7 @@ extension AuthController {
         try await model.create(on: req.db)
         
         // TODO: check if has suffix
-        var baseUrl = req.feather.baseUrl + "/"
+        var baseUrl = req.feather.publicUrl + "/"
         if let scheme = try await req.system.variable.find("systemDeepLinkScheme")?.value {
             baseUrl = scheme + "://"
         }
