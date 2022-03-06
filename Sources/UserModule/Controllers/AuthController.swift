@@ -45,7 +45,7 @@ extension AuthController {
     }
     
 
-    func createResetPasswordModel(for email: String, req: Request) async throws {
+    func createResetPasswordModel(for email: String, req: Request, isApi: Bool = false) async throws {
         let user = try await UserAccountModel.query(on: req.db).filter(\.$email == email).first()
         guard let user = user else {
             return
@@ -58,10 +58,9 @@ extension AuthController {
                                          expiration: Date().addingTimeInterval(86_400)) // one day
 
         try await model.create(on: req.db)
-        
-        // TODO: check if has suffix
+
         var baseUrl = req.feather.publicUrl + "/"
-        if let scheme = try await req.system.variable.find("systemDeepLinkScheme")?.value {
+        if isApi, let scheme = try await req.system.variable.find("systemDeepLinkScheme")?.value {
             baseUrl = scheme + "://"
         }
 

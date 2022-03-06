@@ -101,7 +101,7 @@ struct UserAuthApiController: AuthController {
         ]).validate(req)
 
         let input = try req.content.decode(User.Auth.ResetPasswordRequest.self)
-        try await createResetPasswordModel(for: input.email, req: req)
+        try await createResetPasswordModel(for: input.email, req: req, isApi: true)
         return .ok
     }
     
