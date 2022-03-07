@@ -17,6 +17,7 @@ struct UserAdminWidgetTemplate: TemplateRepresentable {
     func render(_ req: Request) -> Tag {
         Svg.user
         H2("User")
+//        P(req.hostname)
         Ul {
 //            if let user = req.auth.get(FeatherAccount.self) {
 //                Li(user.email)

@@ -10,6 +10,13 @@ import Fluent
 import Feather
 import Mail
 
+extension Request {
+    var hostname: String? {
+        return headers.forwarded.first?.for ?? headers.first(name: .xForwardedFor) ?? remoteAddress?.hostname
+    }
+}
+
+
 protocol AuthController {
     
 }
