@@ -38,7 +38,7 @@ public extension UserRoleApi {
 
     func optionList() async throws -> [OptionContext] {
         try await list()
-            .filter { !["guest", "authenticated"].contains($0.key) }
+            .filter { ![User.Role.Keys.Guest, User.Role.Keys.Authenticated].contains($0.key) }
             .map { .init(key: $0.id.string, label: $0.name) }
     }
     

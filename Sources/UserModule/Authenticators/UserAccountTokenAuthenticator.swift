@@ -9,6 +9,7 @@ import Vapor
 import Fluent
 import Feather
 import FeatherApi
+import UserApi
 
 struct UserAccountTokenAuthenticator: AsyncBearerAuthenticator {
 
@@ -24,7 +25,7 @@ struct UserAccountTokenAuthenticator: AsyncBearerAuthenticator {
             return
         }
         let roles = try await req.user.role.repository.findWithPermissions(user.uuid)
-        let isRoot = !roles.filter { $0.key == "root" }.isEmpty
+        let isRoot = !roles.filter { $0.key == User.Role.Keys.Root }.isEmpty
         req.auth.login(FeatherUser(id: user.uuid, level: isRoot ? .root : .authenticated, roles: roles))
         // sliding expiration token...
         token.expiration = now.addingTimeInterval(86_400 * 7)

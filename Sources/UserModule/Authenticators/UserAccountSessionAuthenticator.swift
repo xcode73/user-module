@@ -34,7 +34,7 @@ struct UserAccountSessionAuthenticator: AsyncSessionAuthenticator {
             return
         }
         let roles = try await req.user.role.repository.findWithPermissions(model.uuid)
-        let isRoot = !roles.filter { $0.key == "root" }.isEmpty
+        let isRoot = !roles.filter { $0.key == UserApi.User.Role.Keys.Root }.isEmpty
         return req.auth.login(FeatherUser(id: model.uuid, level: isRoot ? .root : .authenticated, roles: roles))
     }
 }

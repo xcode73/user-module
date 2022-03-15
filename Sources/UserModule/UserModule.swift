@@ -106,9 +106,9 @@ struct UserModule: FeatherModule {
     
     func installUserRolesHook(args: HookArguments) -> [User.Role.Create] {
         [
-            .init(key: "guest", name: "Guest", notes: "Guest users"),
-            .init(key: "authenticated", name: "Authenticated", notes: "Authenticated users"),
-            .init(key: "root", name: "Root", notes: "Root users"),
+            .init(key: User.Role.Keys.Guest, name: "Guest", notes: "Guest users"),
+            .init(key: User.Role.Keys.Authenticated, name: "Authenticated", notes: "Authenticated users"),
+            .init(key: User.Role.Keys.Root, name: "Root", notes: "Root users"),
             /// custom user roles...
             .init(key: "editor", name: "Editor", notes: "Editor user role"),
         ]
@@ -116,13 +116,13 @@ struct UserModule: FeatherModule {
     
     func installRolePermissionsHook(args: HookArguments) -> [User.RolePermission.Create] {
         [
-            .init(key: "guest", permissionKeys: [
+            .init(key: User.Role.Keys.Guest, permissionKeys: [
                 "user.profile.login",
                 "user.profile.create",
                 "user.profile.reset-password",
                 "user.profile.new-password",
             ]),
-            .init(key: "authenticated", permissionKeys: [
+            .init(key: User.Role.Keys.Authenticated, permissionKeys: [
                 "user.profile.detail",
                 "user.profile.update",
                 "user.profile.patch",
@@ -180,7 +180,7 @@ struct UserModule: FeatherModule {
         guard let user = args.req.auth.get(FeatherUser.self) else {
             return false
         }
-        if user.hasRole("authenticated") && args.permission.key == "user.profile.login" {
+        if user.hasRole(User.Role.Keys.Authenticated) && args.permission.key == "user.profile.login" {
             return false
         }
         return user.hasPermission(args.permission)
@@ -191,15 +191,15 @@ struct UserModule: FeatherModule {
     }
     
     func guestRole(args: HookArguments) async throws -> FeatherRole? {
-        try await args.req.user.role.repository.findWithPermissions("guest")
+        try await args.req.user.role.repository.findWithPermissions(User.Role.Keys.Guest)
     }
     
     func authenticatedRole(args: HookArguments) async throws -> FeatherRole? {
-        try await args.req.user.role.repository.findWithPermissions("authenticated")
+        try await args.req.user.role.repository.findWithPermissions(User.Role.Keys.Authenticated)
     }
     
     func rootRole(args: HookArguments) async throws -> FeatherRole? {
-        try await args.req.user.role.repository.findWithPermissions("root")
+        try await args.req.user.role.repository.findWithPermissions(User.Role.Keys.Root)
     }
 
     func adminWidgetsHook(args: HookArguments) -> [TemplateRepresentable] {

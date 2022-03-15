@@ -18,7 +18,7 @@ struct UserInstallStepTemplate: TemplateRepresentable {
     }
 
     func render(_ req: Request) -> Tag {
-        SystemIndexTemplate(.init(title: "Create root user")) {
+        req.templateEngine.system.index(.init(title: "Create root user")) {
             Wrapper {
                 Container {
                     LeadTemplate(.init(title: "Create root user",

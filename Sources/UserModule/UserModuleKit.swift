@@ -28,7 +28,7 @@ public extension HookName {
 //}
 
 
-public struct UserApi {
+public struct UserInterface {
     private var req: Request
     
     public var account: UserAccountApi { .init(.init(req)) }
@@ -40,7 +40,7 @@ public struct UserApi {
 }
 
 public extension Request {
-    var user: UserApi { .init(self) }
+    var user: UserInterface { .init(self) }
 }
 
 
