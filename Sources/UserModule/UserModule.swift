@@ -15,6 +15,12 @@ struct UserModule: FeatherModule {
     
     let router = UserRouter()
     
+    var template: UserModuleTemplate
+    
+    init(template: UserModuleTemplate) {
+        self.template = template
+    }
+    
     func boot(_ app: Application) throws {
         app.migrations.add(UserMigrations.v1())
         app.databases.middleware.use(UserAccountModelMiddleware())

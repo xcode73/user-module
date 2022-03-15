@@ -14,7 +14,7 @@ public func createUserModule() -> UnsafeMutableRawPointer {
 
 public final class UserBuilder: FeatherModuleBuilder {
 
-    public override func build() -> FeatherModule {
-        UserModule()
+    public func build(template: UserModuleTemplate? = nil) -> FeatherModule {
+        UserModule(template: template ?? DefaultUserModuleTemplate())
     }
 }

@@ -8,25 +8,12 @@
 import Vapor
 import Feather
 
-
 public extension HookName {
     static let installUserRoles: HookName = "install-user-roles"
     static let installUserAccounts: HookName = "install-user-accounts"
     static let installUserRolePermissions: HookName = "install-user-role-permissions"
     static let installUserAccountRoles: HookName = "install-user-account-roles"
 }
-
-//public struct UserConfig {
-//    
-//    public var login: String
-//    public var register: String
-//    public var resetPassword: String
-//    public var newPassword: String
-//    public var logout: String
-//
-//    public var redirectQueryKey: String
-//}
-
 
 public struct UserInterface {
     private var req: Request

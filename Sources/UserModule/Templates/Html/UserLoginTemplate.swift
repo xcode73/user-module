@@ -9,24 +9,16 @@ import Vapor
 import Feather
 import SwiftHtml
 
-struct UserLoginTemplate: TemplateRepresentable {
-    
-    var context: UserLoginContext
-    var form: TemplateRepresentable
-    
-    init(_ context: UserLoginContext, form: TemplateRepresentable) {
-        self.context = context
-        self.form = form
-    }
+final class UserLoginTemplate: AbstractTemplate<UserLoginContext> {
 
-    func render(_ req: Request) -> Tag {
+    override func render(_ req: Request) -> Tag {
         req.templateEngine.system.index(.init(title: context.title)) {
             Wrapper {
                 Container {
                     LeadTemplate(.init(title: "Sign in",
                                        excerpt: "Please enter your user credentials to sign in.")).render(req)
 
-                    form.render(req)
+                    FormTemplate(context.form).render(req)
                 }
             }
         }
