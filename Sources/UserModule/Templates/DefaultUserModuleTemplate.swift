@@ -13,7 +13,7 @@ struct DefaultUserModuleTemplate: UserModuleTemplate {
 
     init() {}
 
-    func login(_ context: UserLoginContext, _ builder: () -> Tag) -> AbstractTemplate<UserLoginContext> {
+    func login(_ context: UserLoginContext) -> AbstractTemplate<UserLoginContext> {
         UserLoginTemplate(context)
     }
 }

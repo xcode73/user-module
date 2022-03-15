@@ -30,4 +30,11 @@ public extension Request {
     var user: UserInterface { .init(self) }
 }
 
+public extension TemplateEngine {
+
+    var user: UserModuleTemplate {
+        self.get(UserModuleTemplate.self)
+    }
+}
+
 

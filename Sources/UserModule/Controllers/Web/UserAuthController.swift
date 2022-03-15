@@ -18,7 +18,8 @@ struct UserAuthController: AuthController {
     // MARK: - private
     
     private func render(_ req: Request, form: UserLoginForm) -> Response {
-        let template = UserLoginTemplate(.init(title: "Sign in", message: "sign in", form: form.context(req)))
+        let ctx = UserLoginContext(title: "Sign in", message: "sign in", form: form.context(req))
+        let template = req.templateEngine.user.login(ctx)
         return req.templates.renderHtml(template)
     }
 

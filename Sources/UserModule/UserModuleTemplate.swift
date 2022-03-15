@@ -9,5 +9,5 @@ import SwiftSgml
 import Feather
 
 public protocol UserModuleTemplate: FeatherTemplate {
-    func login(_ context: UserLoginContext, @TagBuilder _ builder: () -> Tag) -> AbstractTemplate<UserLoginContext>
+    func login(_ context: UserLoginContext) -> AbstractTemplate<UserLoginContext>
 }
