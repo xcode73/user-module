@@ -17,7 +17,7 @@ final class UserNewPasswordTemplate: AbstractTemplate<UserNewPasswordContext> {
                 Container {
                     LeadTemplate(.init(title: context.title, excerpt: context.message)).render(req)
 
-                    context.form
+                    FormTemplate(context.form).render(req)
                 }
             }
         }

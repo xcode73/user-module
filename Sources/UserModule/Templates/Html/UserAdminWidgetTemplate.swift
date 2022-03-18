@@ -9,7 +9,7 @@ import Vapor
 import Feather
 import SwiftHtml
 import FeatherIcons
-import UserApi
+import UserObjects
 
 struct UserAdminWidgetTemplate: TemplateRepresentable {
     

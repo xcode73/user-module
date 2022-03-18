@@ -7,8 +7,8 @@
 
 import Vapor
 import Feather
-import FeatherApi
-import UserApi
+import FeatherObjects
+import UserObjects
 
 struct UserAccountSessionAuthenticator: AsyncSessionAuthenticator {
     typealias User = FeatherUser
@@ -34,7 +34,7 @@ struct UserAccountSessionAuthenticator: AsyncSessionAuthenticator {
             return
         }
         let roles = try await req.user.role.repository.findWithPermissions(model.uuid)
-        let isRoot = !roles.filter { $0.key == UserApi.User.Role.Keys.Root }.isEmpty
+        let isRoot = !roles.filter { $0.key == UserObjects.User.Role.Keys.Root }.isEmpty
         return req.auth.login(FeatherUser(id: model.uuid, level: isRoot ? .root : .authenticated, roles: roles))
     }
 }

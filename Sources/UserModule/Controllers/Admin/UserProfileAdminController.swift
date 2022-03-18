@@ -7,8 +7,8 @@
 
 import Vapor
 import Feather
-import FeatherApi
-import UserApi
+import FeatherObjects
+import UserObjects
 
 struct UserProfileAdminController: AdminDetailController, AdminUpdateController {
     

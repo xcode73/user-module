@@ -7,7 +7,7 @@
 
 import Vapor
 import Feather
-import FeatherApi
+import FeatherObjects
 
 struct UserInstallStepController: SystemInstallStepController {
 

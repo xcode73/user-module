@@ -16,4 +16,16 @@ struct DefaultUserModuleTemplate: UserModuleTemplate {
     func login(_ context: UserLoginContext) -> AbstractTemplate<UserLoginContext> {
         UserLoginTemplate(context)
     }
+
+    func register(_ context: UserRegisterContext) -> AbstractTemplate<UserRegisterContext> {
+        UserRegisterTemplate(context)
+    }
+    
+    func newPassword(_ context: UserNewPasswordContext) -> AbstractTemplate<UserNewPasswordContext> {
+        UserNewPasswordTemplate(context)
+    }
+    
+    func resetPassword(_ context: UserResetPasswordContext) -> AbstractTemplate<UserResetPasswordContext> {
+        UserResetPasswordTemplate(context)
+    }
 }

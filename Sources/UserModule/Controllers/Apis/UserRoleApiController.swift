@@ -7,7 +7,7 @@
 
 import Vapor
 import Feather
-import UserApi
+import UserObjects
 
 extension User.Role.List: Content {}
 extension User.Role.Detail: Content {}
@@ -36,7 +36,11 @@ struct UserRoleApiController: ApiController {
         model.patch(input)
     }
     
+    @AsyncValidatorBuilder
     func validators(optional: Bool) -> [AsyncValidator] {
-        []
+        KeyedContentValidator<String>.required("key", optional: optional)
+//        KeyedContentValidator<String>("key", "Key must be unique", optional: optional) { req, value in
+//            try await req.user.role.repository.isUnique(\.$key == value, ApiModel.getIdParameter(req))
+//        }
     }
 }

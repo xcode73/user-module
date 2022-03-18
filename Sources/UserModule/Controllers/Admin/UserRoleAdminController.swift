@@ -8,7 +8,7 @@
 import Vapor
 import Feather
 import Fluent
-import UserApi
+import UserObjects
 
 struct UserRoleAdminController: AdminController {
     typealias ApiModel = User.Role

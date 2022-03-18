@@ -11,14 +11,12 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/feathercms/feather-core", .branch("dev")),
-        .package(url: "https://github.com/feathercms/feather-api", .branch("main")),
-        .package(url: "https://github.com/feathercms/user-api", .branch("main")),
+        .package(url: "https://github.com/feathercms/user-objects", .branch("main")),
     ],
     targets: [
         .target(name: "UserModule",
                 dependencies: [
-                    .product(name: "FeatherApi", package: "feather-api"),
-                    .product(name: "UserApi", package: "user-api"),
+                    .product(name: "UserObjects", package: "user-objects"),
                     .product(name: "Feather", package: "feather-core"),
                 ],
                 resources: [

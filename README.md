@@ -9,14 +9,22 @@ This module is reponsible for providing a simple blog platform for Feather CMS.
 curl \
 -X POST \
 -H 'Content-Type: application/json' \
--d '{"email": "root@feathercms.com", "password": "ChangeMe1"}' \
+-d '{"email": "root@feathercms.com", "password": "FeatherCMS"}' \
 "http://localhost:8080/api/login/" | jq
+
+
+curl \
+-X POST \
+-H 'Authorization: Bearer QGTW8FAqeK8kRPSoKyIxmlBg8FHJ7hE60zjpiXW3veIKMTg7d6YUYDjAwtfRDMuz' \
+-H 'Content-Type: application/json' \
+-d '{"name": "lol"}' \
+"http://localhost:8080/api/user/roles/" | jq
 
 
 # get account details (profile only)
 curl \
 -X GET \
--H 'Authorization: Bearer lS4g3TR0rtfyKZu2pvqFkAfXJ2MPy0puOEAVv5zvxg8NUQB4S0RU0Og6LcG3ekCp' \
+-H 'Authorization: Bearer QGTW8FAqeK8kRPSoKyIxmlBg8FHJ7hE60zjpiXW3veIKMTg7d6YUYDjAwtfRDMuz' \
 -H 'Content-Type: application/json' \
 "http://localhost:8080/api/profile/" | jq
 

@@ -8,8 +8,8 @@
 import Vapor
 import Fluent
 import Feather
-import FeatherApi
-import UserApi
+import FeatherObjects
+import UserObjects
 
 struct UserModule: FeatherModule {
     
@@ -22,6 +22,8 @@ struct UserModule: FeatherModule {
     }
     
     func boot(_ app: Application) throws {
+        app.templateEngine.register(template)
+
         app.migrations.add(UserMigrations.v1())
         app.databases.middleware.use(UserAccountModelMiddleware())
         

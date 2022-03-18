@@ -7,7 +7,7 @@
 
 import Vapor
 import Feather
-import UserApi
+import UserObjects
 
 struct UserAccountEditor: FeatherModelEditor {
     let model: UserAccountModel

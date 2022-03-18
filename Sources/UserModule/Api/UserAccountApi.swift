@@ -7,7 +7,7 @@
 
 import Foundation
 import Feather
-import UserApi
+import UserObjects
 
 public struct UserAccountApi {
 

@@ -7,7 +7,7 @@
 
 import Feather
 import Fluent
-import UserApi
+import UserObjects
 
 struct UserAccountAdminController: AdminController {
     typealias ApiModel = User.Account

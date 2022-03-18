@@ -7,14 +7,16 @@
 
 import Vapor
 import Feather
-import UserApi
+import UserObjects
 
 struct UserRouter: FeatherRouter {
     
     let authController = UserAuthController()
     let authApiController = UserAuthApiController()
     let accountController = UserAccountAdminController()
+    let accountApiController = UserAccountApiController()
     let roleController = UserRoleAdminController()
+    let roleApiController = UserRoleApiController()
     let profileController = UserProfileAdminController()
 
     func webRoutesHook(args: HookArguments) {
@@ -75,8 +77,10 @@ struct UserRouter: FeatherRouter {
     func apiRoutesHook(args: HookArguments) {
         args.routes
             .get("profile", use: authApiController.profileApi)
-//        accountController.setupApiRoutes(args.routes)
-//        roleController.setupApiRoutes(args.routes)
+        
+        accountApiController.setUpRoutes(args.routes)
+        roleApiController.setUpRoutes(args.routes)
+
 //        permissionController.setupApiRoutes(args.routes)
     }
 }

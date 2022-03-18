@@ -6,15 +6,14 @@
 //
 
 import SwiftSgml
+import Feather
 
-struct UserRegisterContext {
-    var title: String
-    var message: String
-    var form: Tag
+public struct UserRegisterContext {
+    public let title: String
+    public let message: String
+    public let form: FormContext
     
-    init(title: String,
-         message: String,
-         form: Tag) {
+    public init(title: String, message: String, form: FormContext) {
         self.title = title
         self.message = message
         self.form = form

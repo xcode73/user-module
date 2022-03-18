@@ -8,7 +8,7 @@
 import Feather
 import Vapor
 import Fluent
-import FeatherApi
+import FeatherObjects
 
 struct UserRoleRepository: FeatherModelRepository {
     typealias DatabaseModel = UserRoleModel

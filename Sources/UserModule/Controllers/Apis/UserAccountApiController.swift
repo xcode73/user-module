@@ -8,7 +8,7 @@
 import Vapor
 import Fluent
 import Feather
-import UserApi
+import UserObjects
 
 extension User.Account.List: Content {}
 extension User.Account.Detail: Content {}

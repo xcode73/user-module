@@ -17,7 +17,7 @@ final class UserResetPasswordTemplate: AbstractTemplate<UserResetPasswordContext
                 Container {
                     LeadTemplate(.init(title: context.title, excerpt: context.message)).render(req)
 
-                    context.form
+                    FormTemplate(context.form).render(req)
                 }
             }
         }

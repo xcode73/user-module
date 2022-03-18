@@ -8,8 +8,8 @@
 import Feather
 import Vapor
 import Fluent
-import FeatherApi
-import UserApi
+import FeatherObjects
+import UserObjects
 
 extension User.Token.Detail: Content {}
 
@@ -93,8 +93,7 @@ struct UserAuthController: AuthController {
     // MARK: - private
     
     private func renderRegisterForm(_ req: Request, form: UserRegisterForm) -> Response {
-        let form = FormTemplate.init(form.context(req)).render(req)
-        let template = UserRegisterTemplate(.init(title: "Register", message: "register", form: form))
+        let template = UserRegisterTemplate(.init(title: "Register", message: "register", form: form.context(req)))
         return req.templates.renderHtml(template)
     }
 
@@ -144,8 +143,7 @@ struct UserAuthController: AuthController {
     // MARK: - forget password
     
     private func renderResetPasswordForm(_ req: Request, form: UserResetPasswordForm) -> Response {
-        let form = FormTemplate.init(form.context(req)).render(req)
-        let template = UserRegisterTemplate(.init(title: "Reset password", message: "reset password", form: form))
+        let template = UserRegisterTemplate(.init(title: "Reset password", message: "reset password", form: form.context(req)))
         return req.templates.renderHtml(template)
     }
     
@@ -186,8 +184,7 @@ struct UserAuthController: AuthController {
     // MARK: - new password
     
     private func renderNewPasswordForm(_ req: Request, form: UserNewPasswordForm) -> Response {
-        let form = FormTemplate.init(form.context(req)).render(req)
-        let template = UserRegisterTemplate(.init(title: "New password", message: "new password", form: form))
+        let template = UserRegisterTemplate(.init(title: "New password", message: "new password", form: form.context(req)))
         return req.templates.renderHtml(template)
     }
     

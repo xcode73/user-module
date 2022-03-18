@@ -8,8 +8,8 @@
 import Vapor
 import Fluent
 import Feather
-import FeatherApi
-import UserApi
+import FeatherObjects
+import UserObjects
 
 struct UserAccountTokenAuthenticator: AsyncBearerAuthenticator {
 
