@@ -12,6 +12,14 @@ struct UserMigrations {
     struct v1: AsyncMigration {
 
         func prepare(on db: Database) async throws {
+            try await db.schema(UserInvitationModel.schema)
+                .id()
+                .field(UserInvitationModel.FieldKeys.v1.email, .string, .required)
+                .field(UserInvitationModel.FieldKeys.v1.value, .string, .required)
+                .field(UserInvitationModel.FieldKeys.v1.expiration, .datetime, .required)
+                .unique(on: UserInvitationModel.FieldKeys.v1.email)
+                .create()
+            
             try await db.schema(UserAccountModel.schema)
                 .id()
                 .field(UserAccountModel.FieldKeys.v1.imageKey, .string)
@@ -26,7 +34,7 @@ struct UserMigrations {
                 .id()
                 .field(UserTokenModel.FieldKeys.v1.value, .string, .required)
                 .field(UserTokenModel.FieldKeys.v1.accountId, .uuid, .required)
-                .field(UserResetPasswordModel.FieldKeys.v1.expiration, .datetime, .required)
+                .field(UserTokenModel.FieldKeys.v1.expiration, .datetime, .required)
                 .foreignKey(UserTokenModel.FieldKeys.v1.accountId, references: UserAccountModel.schema, .id)
                 .unique(on: UserTokenModel.FieldKeys.v1.value)
                 .create()
@@ -67,6 +75,7 @@ struct UserMigrations {
             try await db.schema(UserTokenModel.schema).delete()
             try await db.schema(UserAccountModel.schema).delete()
             try await db.schema(UserResetPasswordModel.schema).delete()
+            try await db.schema(UserInvitationModel.schema).delete()
         }
     }
 }

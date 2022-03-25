@@ -126,7 +126,8 @@ struct UserModule: FeatherModule {
         [
             .init(key: User.Role.Keys.Guest, permissionKeys: [
                 "user.profile.login",
-                "user.profile.create",
+                "user.profile.invitation",
+                "user.profile.registration",
                 "user.profile.reset-password",
                 "user.profile.new-password",
             ]),

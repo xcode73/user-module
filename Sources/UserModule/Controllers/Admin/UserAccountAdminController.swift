@@ -8,6 +8,7 @@
 import Feather
 import Fluent
 import UserObjects
+import Vapor
 
 struct UserAccountAdminController: AdminController {
     typealias ApiModel = User.Account
@@ -64,5 +65,79 @@ struct UserAccountAdminController: AdminController {
     
     func deleteInfo(_ model: DatabaseModel) -> String {
         model.email
+    }
+    
+    func listNavigation(_ req: Request) -> [LinkContext] {
+        [
+            LinkContext(label: "Create",
+                        path: "create",
+                        permission: ApiModel.permission(for: .create).key),
+            
+            LinkContext(label: "Invite",
+                        path: "invitation",
+                        permission: ApiModel.permission(for: .create).key),
+        ]
+    }
+    
+    
+    private func render(_ req: Request, form: UserInvitationForm) -> Response {
+        let ctx = UserInvitationContext(title: "Invite ",
+                                        message: "inv",
+                                        link: .init(label: ""),
+                                        form: form.context(req))
+        let template = UserInvitationAdminTemplate(ctx)
+        return req.templates.renderHtml(template)
+    }
+    
+    func invitationView(_ req: Request) async throws -> Response {
+        let form = UserInvitationForm()
+        form.fields = form.createFields(req)
+        try await form.load(req: req)
+        return render(req, form: form)
+    }
+    
+    func invitationAction(_ req: Request) async throws -> Response {
+        let form = UserInvitationForm()
+        form.fields = form.createFields(req)
+        try await form.load(req: req)
+        try await form.process(req: req)
+        guard try await form.validate(req: req) else {
+            return render(req, form: form)
+        }
+        try await form.write(req: req)
+
+        /// drop previous invitation
+        try await UserInvitationModel.query(on: req.db).filter(\.$email == form.email).delete()
+        // sliding expiration token...
+        let expiration = Date().addingTimeInterval(86_400 * 7) // 1 week
+
+        let model = UserInvitationModel(email: form.email, value: .generateToken(), expiration: expiration)
+        try await model.create(on: req.db)
+        
+        var baseUrl = req.feather.publicUrl + "/"
+//        if isApi, let scheme = try await req.system.variable.find("systemDeepLinkScheme")?.value {
+//            baseUrl = scheme + "://"
+//        }
+
+        let html = """
+            <h1>\(model.email)</h1>
+            <p>\(model.value)</p>
+            <a href="\(baseUrl)register/?invitation=\(model.value)&redirect=/login/">Create account</a>
+        """
+
+        _ = try await req.mail.send(.init(from: "noreply@feathercms.com",
+                                          to: [model.email],
+                                          cc: ["mail.tib@gmail.com", "gurrka@gmail.com", "malacszem92@gmail.com"],
+                                          subject: "Invitation",
+                                          content: .init(value: html, type: .html)))
+        
+        return render(req, form: form)
+    }
+    
+    func setUpInvitationRoutes(_ routes: RoutesBuilder) {
+        let routes = getBaseRoutes(routes)
+        
+        routes.get("invitation", use: invitationView)
+        routes.post("invitation", use: invitationAction)
     }
 }
