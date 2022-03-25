@@ -18,7 +18,7 @@ final class UserRegisterForm: AbstractForm {
      
     init() {
         super.init()
-        self.submit = "Register"
+        self.submit = "Create account"
     }
 
     @FormFieldBuilder

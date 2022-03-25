@@ -20,9 +20,14 @@ struct UserAuthController: AuthController {
     private func render(_ req: Request, form: UserLoginForm) -> Response {
         let ctx = UserLoginContext(title: "Sign in",
                                    message: "Please enter your user credentials to sign in.",
-                                   link: .init(label: "Forgot your password?",
-                                               path: "/reset-password/?redirect=/login/",
-                                               absolute: true),
+                                   links: [
+                                    .init(label: "Forgot your password?",
+                                          path: "/reset-password/?redirect=/login/",
+                                          absolute: true),
+                                    .init(label: "Create account",
+                                          path: "/register/?redirect=/login/",
+                                          absolute: true),
+                                   ],
                                    form: form.context(req))
         let template = req.templateEngine.user.login(ctx)
         return req.templates.renderHtml(template)
@@ -98,7 +103,9 @@ struct UserAuthController: AuthController {
     // MARK: - private
     
     private func renderRegisterForm(_ req: Request, form: UserRegisterForm) -> Response {
-        let template = UserRegisterTemplate(.init(title: "Register", message: "register", form: form.context(req)))
+        let template = UserRegisterTemplate(.init(title: "Create account",
+                                                  message: "Register a new user account",
+                                                  form: form.context(req)))
         return req.templates.renderHtml(template)
     }
 

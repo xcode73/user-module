@@ -20,7 +20,10 @@ final class UserLoginTemplate: AbstractTemplate<UserLoginContext> {
 
                     FormTemplate(context.form).render(req)
                     
-                    LinkTemplate(context.link).render(req)
+                    for link in context.links {
+                        LinkTemplate(link).render(req)
+                        Br()
+                    }
                 }
             }
         }
