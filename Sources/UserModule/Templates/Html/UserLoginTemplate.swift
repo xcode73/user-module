@@ -20,7 +20,7 @@ final class UserLoginTemplate: AbstractTemplate<UserLoginContext> {
 
                     FormTemplate(context.form).render(req)
                     
-                    LinkTemplate(context.resetPassword).render(req)
+                    LinkTemplate(context.link).render(req)
                 }
             }
         }

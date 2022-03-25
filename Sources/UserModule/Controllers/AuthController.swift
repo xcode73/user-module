@@ -74,7 +74,7 @@ extension AuthController {
         let html = """
             <h1>\(user.email)</h1>
             <p>\(model.token)</p>
-            <a href="\(baseUrl)new-password?token=\(model.token)">Password reset link</a>
+            <a href="\(baseUrl)new-password?token=\(model.token)&redirect=/login/">Password reset link</a>
         """
 
         _ = try await req.mail.send(.init(from: "noreply@feathercms.com",

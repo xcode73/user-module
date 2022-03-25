@@ -14,7 +14,7 @@ final class UserNewPasswordForm: AbstractForm {
 
     init() {
         super.init()
-        self.submit = "New password"
+        self.submit = "Set new password"
     }
 
     @FormFieldBuilder

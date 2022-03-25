@@ -20,9 +20,9 @@ struct UserAuthController: AuthController {
     private func render(_ req: Request, form: UserLoginForm) -> Response {
         let ctx = UserLoginContext(title: "Sign in",
                                    message: "Please enter your user credentials to sign in.",
-                                   resetPassword: .init(label: "Forgot your password?",
-                                                        path: "/reset-password/?redirect=/login/",
-                                                        absolute: true),
+                                   link: .init(label: "Forgot your password?",
+                                               path: "/reset-password/?redirect=/login/",
+                                               absolute: true),
                                    form: form.context(req))
         let template = req.templateEngine.user.login(ctx)
         return req.templates.renderHtml(template)
@@ -148,7 +148,12 @@ struct UserAuthController: AuthController {
     // MARK: - forget password
     
     private func renderResetPasswordForm(_ req: Request, form: UserResetPasswordForm) -> Response {
-        let template = UserRegisterTemplate(.init(title: "Reset password", message: "reset password", form: form.context(req)))
+        let template = UserResetPasswordTemplate(.init(title: "Forgot your password?",
+                                                       message: "No worries, we'll send you reset instructions.",
+                                                       link: .init(label: "Sign in",
+                                                                   path: "/login/",
+                                                                   absolute: true),
+                                                       form: form.context(req)))
         return req.templates.renderHtml(template)
     }
     
@@ -189,7 +194,9 @@ struct UserAuthController: AuthController {
     // MARK: - new password
     
     private func renderNewPasswordForm(_ req: Request, form: UserNewPasswordForm) -> Response {
-        let template = UserRegisterTemplate(.init(title: "New password", message: "new password", form: form.context(req)))
+        let template = UserRegisterTemplate(.init(title: "Set new password",
+                                                  message: "Pick a new password for your account",
+                                                  form: form.context(req)))
         return req.templates.renderHtml(template)
     }
     
@@ -235,6 +242,6 @@ struct UserAuthController: AuthController {
 
         try await setNewPassword(form.password, token, req)
 
-        return req.redirect(to: "/")
+        return req.redirect(to: getCustomRedirect(req))
     }
 }
