@@ -18,7 +18,12 @@ struct UserAuthController: AuthController {
     // MARK: - private
     
     private func render(_ req: Request, form: UserLoginForm) -> Response {
-        let ctx = UserLoginContext(title: "Sign in", message: "sign in", form: form.context(req))
+        let ctx = UserLoginContext(title: "Sign in",
+                                   message: "Please enter your user credentials to sign in.",
+                                   resetPassword: .init(label: "Forgot your password?",
+                                                        path: "/reset-password/?redirect=/login/",
+                                                        absolute: true),
+                                   form: form.context(req))
         let template = req.templateEngine.user.login(ctx)
         return req.templates.renderHtml(template)
     }
@@ -178,7 +183,7 @@ struct UserAuthController: AuthController {
         try await form.write(req: req)
         
         try await createResetPasswordModel(for: form.email, req: req)
-        return req.redirect(to: "/")
+        return req.redirect(to: getCustomRedirect(req))
     }
     
     // MARK: - new password

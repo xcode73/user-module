@@ -15,10 +15,12 @@ final class UserLoginTemplate: AbstractTemplate<UserLoginContext> {
         req.templateEngine.system.index(.init(title: context.title)) {
             Wrapper {
                 Container {
-                    LeadTemplate(.init(title: "Sign in",
-                                       excerpt: "Please enter your user credentials to sign in.")).render(req)
+                    LeadTemplate(.init(title: context.title,
+                                       excerpt: context.message)).render(req)
 
                     FormTemplate(context.form).render(req)
+                    
+                    LinkTemplate(context.resetPassword).render(req)
                 }
             }
         }
