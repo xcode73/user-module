@@ -24,7 +24,11 @@ protocol AuthController {
 extension AuthController {
     
     func createProfileAccess(_ req: Request) async throws -> Bool {
-        try await req.checkAccess(for: .init("user.profile.registration"))
+        try await req.checkAccess(for: .init("user.profile.create"))
+    }
+    
+    func createProfileInvitationAccess(_ req: Request) async throws -> Bool {
+        try await req.checkAccess(for: .init("user.profile.invitation"))
     }
 
     func detailProfileAccess(_ req: Request) async throws -> Bool {

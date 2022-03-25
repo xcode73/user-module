@@ -125,9 +125,9 @@ struct UserModule: FeatherModule {
     func installRolePermissionsHook(args: HookArguments) -> [User.RolePermission.Create] {
         [
             .init(key: User.Role.Keys.Guest, permissionKeys: [
+                "user.profile.create",
                 "user.profile.login",
                 "user.profile.invitation",
-                "user.profile.registration",
                 "user.profile.reset-password",
                 "user.profile.new-password",
             ]),
@@ -159,6 +159,7 @@ struct UserModule: FeatherModule {
             .init(namespace: "user", context: "profile", action: .custom("logout")),
             .init(namespace: "user", context: "profile", action: .custom("reset-password")),
             .init(namespace: "user", context: "profile", action: .custom("new-password")),
+            .init(namespace: "user", context: "profile", action: .custom("invitation")),
         ]
         return permissions.map { .init($0) }
     }

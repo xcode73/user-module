@@ -90,6 +90,7 @@ struct UserAccountAdminController: AdminController {
     }
     
     func invitationView(_ req: Request) async throws -> Response {
+        // TODO: check permission
         let form = UserInvitationForm()
         form.fields = form.createFields(req)
         try await form.load(req: req)
@@ -97,6 +98,7 @@ struct UserAccountAdminController: AdminController {
     }
     
     func invitationAction(_ req: Request) async throws -> Response {
+        // TODO: check permission
         let form = UserInvitationForm()
         form.fields = form.createFields(req)
         try await form.load(req: req)
@@ -131,7 +133,7 @@ struct UserAccountAdminController: AdminController {
                                           subject: "Invitation",
                                           content: .init(value: html, type: .html)))
         
-        return render(req, form: form)
+        return req.redirect(to: "/admin/user/accounts/")
     }
     
     func setUpInvitationRoutes(_ routes: RoutesBuilder) {

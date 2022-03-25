@@ -116,12 +116,31 @@ struct UserAuthController: AuthController {
         guard let guest = req.auth.get(FeatherUser.self), guest.level == .guest else {
             return req.redirect(to: getCustomRedirect(req))
         }
-        guard try await createProfileAccess(req) else {
+        let publicRegistrationAccess = try await createProfileAccess(req)
+        let invitationAccess = try await createProfileInvitationAccess(req)
+        guard publicRegistrationAccess || invitationAccess else {
             throw Abort(.forbidden)
         }
+        
+        var invitation: UserInvitationModel?
+        if invitationAccess && !publicRegistrationAccess {
+            guard
+                let invitationToken: String = req.query["invitation"],
+                !invitationToken.isEmpty,
+                let inv = try await UserInvitationModel.query(on: req.db).filter(\.$value == invitationToken).first(),
+                inv.expiration > Date()
+            else {
+                throw Abort(.forbidden)
+            }
+            invitation = inv
+        }
+        
         let form = UserRegisterForm()
         form.fields = form.createFields(req)
+        form.email = invitation?.email ?? ""
+
         try await form.load(req: req)
+        try await form.read(req: req)
         return renderRegisterForm(req, form: form)
     }
 
@@ -129,13 +148,30 @@ struct UserAuthController: AuthController {
         guard let guest = req.auth.get(FeatherUser.self), guest.level == .guest else {
             return req.redirect(to: getCustomRedirect(req))
         }
-        guard try await createProfileAccess(req) else {
+        let publicRegistrationAccess = try await createProfileAccess(req)
+        let invitationAccess = try await createProfileInvitationAccess(req)
+        guard publicRegistrationAccess || invitationAccess else {
             throw Abort(.forbidden)
+        }
+        
+        var invitation: UserInvitationModel?
+        if invitationAccess && !publicRegistrationAccess {
+            guard
+                let invitationToken: String = req.query["invitation"],
+                !invitationToken.isEmpty,
+                let inv = try await UserInvitationModel.query(on: req.db).filter(\.$value == invitationToken).first(),
+                inv.expiration > Date()
+            else {
+                throw Abort(.forbidden)
+            }
+            invitation = inv
         }
 
         let form = UserRegisterForm()
         form.fields = form.createFields(req)
+        form.email = invitation?.email ?? ""
         try await form.load(req: req)
+        try await form.read(req: req)
         try await form.process(req: req)
         guard try await form.validate(req: req) else {
             return renderRegisterForm(req, form: form)
@@ -148,6 +184,8 @@ struct UserAuthController: AuthController {
                                    email: form.email,
                                    password: try Bcrypt.hash(form.password))
             .create(on: req.db)
+        
+        try await invitation?.delete(on: req.db)
 
         return req.redirect(to: "/login/")
     }
