@@ -75,7 +75,7 @@ struct UserAccountAdminController: AdminController {
             
             LinkContext(label: "Invite",
                         path: "invitation",
-                        permission: ApiModel.permission(for: .create).key),
+                        permission: "user.profile.invitation"),
         ]
     }
     
@@ -92,7 +92,10 @@ struct UserAccountAdminController: AdminController {
     // MARK: - invitation
     
     func invitationView(_ req: Request) async throws -> Response {
-        // TODO: check permission
+        guard req.checkPermission("user.profile.invitation") else {
+            throw Abort(.forbidden)
+        }
+
         let form = UserInvitationForm()
         form.fields = form.createFields(req)
         try await form.load(req: req)
@@ -100,7 +103,10 @@ struct UserAccountAdminController: AdminController {
     }
     
     func invitationAction(_ req: Request) async throws -> Response {
-        // TODO: check permission
+        guard req.checkPermission("user.profile.invitation") else {
+            throw Abort(.forbidden)
+        }
+        
         let form = UserInvitationForm()
         form.fields = form.createFields(req)
         try await form.load(req: req)
@@ -110,7 +116,6 @@ struct UserAccountAdminController: AdminController {
         }
         try await form.write(req: req)
 
-        /// drop previous invitation
         try await UserInvitationModel.query(on: req.db).filter(\.$email == form.email).delete()
         // sliding expiration token...
         let expiration = Date().addingTimeInterval(86_400 * 7) // 1 week

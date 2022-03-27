@@ -16,4 +16,10 @@ public struct UserConfig {
     public let logout: String
     public let redirectQueryKey: String
 
+    static var `default`: UserConfig = .init(login: "login",
+                                             register: "register",
+                                             resetPassword: "reset-password",
+                                             newPassword: "new-password",
+                                             logout: "logout",
+                                             redirectQueryKey: "redirect")
 }

@@ -177,13 +177,15 @@ struct UserAuthController: AuthController {
             return renderRegisterForm(req, form: form)
         }
         try await form.write(req: req)
-        try await UserAccountModel(id: UUID(),
-                                   imageKey: form.imageKey,
-                                   firstName: form.firstName,
-                                   lastName: form.lastName,
-                                   email: form.email,
-                                   password: try Bcrypt.hash(form.password))
-            .create(on: req.db)
+        let model = UserAccountModel(id: UUID(),
+                                     imageKey: form.imageKey,
+                                     firstName: form.firstName,
+                                     lastName: form.lastName,
+                                     email: form.email,
+                                     password: try Bcrypt.hash(form.password))
+        
+        try await model.create(on: req.db)
+        let _: [Void] = try await req.invokeAllAsync(.userRegistration, args: ["userId": model.uuid])
         
         try await invitation?.delete(on: req.db)
 

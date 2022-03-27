@@ -26,6 +26,10 @@ extension UserRoleRepository {
         try await query().filter(\.$key == key).first()
     }
     
+    func find(_ keys: [String]) async throws -> [DatabaseModel] {
+        try await query().filter(\.$key ~~ keys).all()
+    }
+    
     func permissionIds(_ roleId: UUID) async throws -> [UUID] {
         try await UserRolePermissionModel.query(on: req.db).filter(\.$roleId == roleId).all().map(\.permissionId)
     }

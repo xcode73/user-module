@@ -9,13 +9,21 @@ import Vapor
 import Feather
 
 public struct UserInterface {
-    private var req: Request
     
-    public var account: UserAccountApi { .init(.init(req)) }
-    public var role: UserRoleApi { .init(.init(req)) }
+    private let req: Request
+
+    public let account: UserAccountApi
+    public let role: UserRoleApi
+    public let profile: UserProfileApi
+    public let invitation: UserInvitationApi
 
     init(_ req: Request) {
         self.req = req
+        
+        self.account = .init(.init(req))
+        self.role = .init(.init(req))
+        self.profile = .init(.init(req))
+        self.invitation = .init(.init(req))
     }
 }
 

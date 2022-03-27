@@ -8,6 +8,7 @@
 import Foundation
 import Feather
 import UserObjects
+import Fluent
 
 public struct UserAccountApi {
 
@@ -42,5 +43,17 @@ public extension UserAccountApi {
 
     func optionList() async throws -> [OptionContext] {
         try await list().map { .init(key: $0.id.string, label: $0.email) }
+    }
+    
+    func addRoles(keys: [String], accountId: UUID) async throws {
+        let roleIds = try await repository.req.user.role.repository.find(keys)
+            .map(\.uuid)
+
+        try await UserAccountRoleModel.query(on: repository.req.db).filter(\.$roleId ~~ roleIds).delete()
+        
+        try await roleIds.map {
+            UserAccountRoleModel(accountId: accountId, roleId: $0)
+        }
+        .create(on: repository.req.db, chunks: 25)
     }
 }

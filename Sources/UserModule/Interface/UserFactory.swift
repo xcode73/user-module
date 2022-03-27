@@ -7,14 +7,11 @@
 
 import Feather
 
-@_cdecl("createUserModule")
-public func createUserModule() -> UnsafeMutableRawPointer {
-    return Unmanaged.passRetained(UserBuilder()).toOpaque()
-}
+/// user module factory
+public struct UserModuleFactory {
 
-public final class UserBuilder: FeatherModuleBuilder {
-
-    public func build(template: UserModuleTemplate? = nil) -> FeatherModule {
+    /// build a new module instance using a template
+    public static func build(using template: UserModuleTemplate? = nil) -> FeatherModule {
         UserModule(template: template ?? DefaultUserModuleTemplate())
     }
 }

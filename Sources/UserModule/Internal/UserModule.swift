@@ -54,10 +54,19 @@ struct UserModule: FeatherModule {
         app.hooks.registerAsync(.guestRole, use: guestRole)
         app.hooks.registerAsync(.authenticatedRole, use: authenticatedRole)
         app.hooks.registerAsync(.rootRole, use: rootRole)
+
+//        app.hooks.registerAsync(.userRegistration, use: userRegistration)
                 
         try router.boot(app)
     }
-    
+
+//    func userRegistration(args: HookArguments) async throws -> Void {
+//        guard let accountId = args["userId"] as? UUID else {
+//            return
+//        }
+//        try await args.req.user.account.addRoles(keys: ["editor"], accountId: accountId)
+//    }
+
     // MARK: - install
     
     func installStepHook(args: HookArguments) -> [SystemInstallStep] {
