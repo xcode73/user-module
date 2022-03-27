@@ -15,8 +15,9 @@ struct UserMigrations {
             try await db.schema(UserInvitationModel.schema)
                 .id()
                 .field(UserInvitationModel.FieldKeys.v1.email, .string, .required)
-                .field(UserInvitationModel.FieldKeys.v1.value, .string, .required)
+                .field(UserInvitationModel.FieldKeys.v1.token, .string, .required)
                 .field(UserInvitationModel.FieldKeys.v1.expiration, .datetime, .required)
+                .field(UserInvitationModel.FieldKeys.v1.inviterId, .uuid, .required)
                 .unique(on: UserInvitationModel.FieldKeys.v1.email)
                 .create()
             

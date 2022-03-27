@@ -157,13 +157,10 @@ struct UserModule: FeatherModule {
         var permissions = User.availablePermissions()
         permissions += User.Account.availablePermissions()
         permissions += User.Permission.availablePermissions()
+        permissions += User.Invitation.availablePermissions()
         permissions += User.Role.availablePermissions()
+        permissions += User.Profile.availablePermissions()
         permissions += [
-            .init(namespace: "user", context: "profile", action: .detail),
-            .init(namespace: "user", context: "profile", action: .create),
-            .init(namespace: "user", context: "profile", action: .update),
-            .init(namespace: "user", context: "profile", action: .patch),
-            .init(namespace: "user", context: "profile", action: .delete),
             .init(namespace: "user", context: "profile", action: .custom("login")),
             .init(namespace: "user", context: "profile", action: .custom("logout")),
             .init(namespace: "user", context: "profile", action: .custom("reset-password")),

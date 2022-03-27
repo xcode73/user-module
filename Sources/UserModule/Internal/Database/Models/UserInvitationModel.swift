@@ -15,26 +15,30 @@ final class UserInvitationModel: FeatherDatabaseModel {
     struct FieldKeys {
         struct v1 {
             static var email: FieldKey { "email" }
-            static var value: FieldKey { "value" }
+            static var token: FieldKey { "token" }
             static var expiration: FieldKey { "expiration" }
+            static var inviterId: FieldKey { "expiration" }
         }
     }
     
     @ID() var id: UUID?
     @Field(key: FieldKeys.v1.email) var email: String
-    @Field(key: FieldKeys.v1.value) var value: String
+    @Field(key: FieldKeys.v1.token) var token: String
     @Field(key: FieldKeys.v1.expiration) var expiration: Date
+    @Field(key: FieldKeys.v1.inviterId) var inviterId: UUID
 
     init() { }
     
     init(id: UUID? = nil,
          email: String,
-         value: String,
-         expiration: Date)
+         token: String,
+         expiration: Date,
+         inviterId: UUID)
     {
         self.id = id
         self.email = email
-        self.value = value
+        self.token = token
         self.expiration = expiration
+        self.inviterId = inviterId
     }
 }

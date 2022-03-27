@@ -13,39 +13,37 @@ import UserObjects
 
 struct UserAdminWidgetTemplate: TemplateRepresentable {
     
+    
+    func links() -> [LinkContext] {
+        [
+            .init(label: "Profile",
+                  path: "/admin/user/profile/",
+                  absolute: true,
+                  permission: User.Profile.permission(for: .detail).key),
+            .init(label: "Accounts",
+                  path: "/admin/user/accounts/",
+                  absolute: true,
+                  permission: User.Account.permission(for: .list).key),
+            .init(label: "Invitations",
+                  path: "/admin/user/invitations/",
+                  absolute: true,
+                  permission: User.Invitation.permission(for: .list).key),
+            .init(label: "Roles",
+                  path: "/admin/user/roles/",
+                  absolute: true,
+                  permission: User.Role.permission(for: .list).key),
+        ]
+    }
+    
     @TagBuilder
     func render(_ req: Request) -> Tag {
         Svg.user
         H2("User")
-//        P(req.hostname)
-        Ul {
-//            if let user = req.auth.get(FeatherAccount.self) {
-//                Li(user.email)
-//            }
-//            Li {
-//                if  {
-//                    A("Sign out")
-//                        .href("/" + req.feather.config.paths.logout)
-//                }
-//            }
 
-            if req.checkPermission(User.Account.permission(for: .detail)) {
+        Ul {
+            links().map { link in
                 Li {
-                    A("Profile")
-                        .href("/admin/user/profile")
-                }
-            }
-            
-            if req.checkPermission(User.Account.permission(for: .list)) {
-                Li {
-                    A("Accounts")
-                        .href("/admin/user/accounts")
-                }
-            }
-            if req.checkPermission(User.Role.permission(for: .list)) {
-                Li {
-                    A("Roles")
-                        .href("/admin/user/roles")
+                    LinkTemplate(link).render(req)
                 }
             }
         }

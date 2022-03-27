@@ -129,7 +129,7 @@ struct UserAuthController: AuthController {
             guard
                 let invitationToken: String = req.query["invitation"],
                 !invitationToken.isEmpty,
-                let inv = try await UserInvitationModel.query(on: req.db).filter(\.$value == invitationToken).first(),
+                let inv = try await UserInvitationModel.query(on: req.db).filter(\.$token == invitationToken).first(),
                 inv.expiration > Date()
             else {
                 throw Abort(.forbidden)
@@ -161,7 +161,7 @@ struct UserAuthController: AuthController {
             guard
                 let invitationToken: String = req.query["invitation"],
                 !invitationToken.isEmpty,
-                let inv = try await UserInvitationModel.query(on: req.db).filter(\.$value == invitationToken).first(),
+                let inv = try await UserInvitationModel.query(on: req.db).filter(\.$token == invitationToken).first(),
                 inv.expiration > Date()
             else {
                 throw Abort(.forbidden)
