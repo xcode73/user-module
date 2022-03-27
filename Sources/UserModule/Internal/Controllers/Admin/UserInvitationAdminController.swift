@@ -78,11 +78,7 @@ struct UserInvitationAdminController: AdminController {
     }
     
     func afterCreate(_ req: Request, _ model: UserInvitationModel) async throws {
-        var baseUrl = req.feather.publicUrl + "/"
-//        if isApi, let scheme = try await req.system.variable.find("systemDeepLinkScheme")?.value {
-//            baseUrl = scheme + "://"
-//        }
-
+        let baseUrl = req.feather.publicUrl + "/"
         let html = """
             <h1>\(model.email)</h1>
             <p>\(model.token)</p>
@@ -94,6 +90,5 @@ struct UserInvitationAdminController: AdminController {
                                           cc: ["mail.tib@gmail.com", "gurrka@gmail.com", "malacszem92@gmail.com"],
                                           subject: "Invitation",
                                           content: .init(value: html, type: .html)))
-
     }
 }

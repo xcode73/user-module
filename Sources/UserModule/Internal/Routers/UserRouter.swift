@@ -19,6 +19,7 @@ struct UserRouter: FeatherRouter {
     let roleApiController = UserRoleApiController()
     let profileController = UserProfileAdminController()
     let invitationController = UserInvitationAdminController()
+    let invitationApiController = UserInvitationApiController()
 
     func webRoutesHook(args: HookArguments) {
         let sessionRoutes = args.routes.grouped(UserAccountSessionAuthenticator())
@@ -82,7 +83,6 @@ struct UserRouter: FeatherRouter {
         
         accountApiController.setUpRoutes(args.routes)
         roleApiController.setUpRoutes(args.routes)
-
-//        permissionController.setupApiRoutes(args.routes)
+        invitationApiController.setUpRoutes(args.routes)
     }
 }

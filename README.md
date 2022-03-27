@@ -21,6 +21,16 @@ curl \
 "http://localhost:8080/api/user/roles/" | jq
 
 
+curl \
+-X POST \
+-H 'Authorization: Bearer jTFf4HJ7pxt4fUvLenzWFn7122FaYimI1f1ZZ96eX3I71aQZYr49LZrhbRP37uX4' \
+-H 'Content-Type: application/json' \
+-d '{"email": "elek@testlocalhost.com"}' \
+"http://localhost:8080/api/user/invitations/" | json_pp
+
+
+
+
 # get account details (profile only)
 curl \
 -X GET \
