@@ -81,13 +81,15 @@ struct UserAccountAdminController: AdminController {
     
     
     private func render(_ req: Request, form: UserInvitationForm) -> Response {
-        let ctx = UserInvitationContext(title: "Invite ",
-                                        message: "inv",
+        let ctx = UserInvitationContext(title: "Invite user",
+                                        message: "Enter an email address to invite a new user account",
                                         link: .init(label: ""),
                                         form: form.context(req))
         let template = UserInvitationAdminTemplate(ctx)
         return req.templates.renderHtml(template)
     }
+    
+    // MARK: - invitation
     
     func invitationView(_ req: Request) async throws -> Response {
         // TODO: check permission

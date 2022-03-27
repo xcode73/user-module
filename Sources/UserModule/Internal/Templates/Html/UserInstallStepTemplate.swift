@@ -9,15 +9,9 @@ import Vapor
 import Feather
 import SwiftHtml
 
-struct UserInstallStepTemplate: TemplateRepresentable {
+final class UserInstallStepTemplate: AbstractTemplate<UserInstallStepContext> {
     
-    var context: UserInstallStepContext
-    
-    init(_ context: UserInstallStepContext) {
-        self.context = context
-    }
-
-    func render(_ req: Request) -> Tag {
+    override func render(_ req: Request) -> Tag {
         req.templateEngine.system.index(.init(title: "Create root user")) {
             Wrapper {
                 Container {

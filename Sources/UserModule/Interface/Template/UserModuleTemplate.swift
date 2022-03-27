@@ -14,3 +14,10 @@ public protocol UserModuleTemplate: FeatherTemplate {
     func newPassword(_ context: UserNewPasswordContext) -> AbstractTemplate<UserNewPasswordContext>
     func resetPassword(_ context: UserResetPasswordContext) -> AbstractTemplate<UserResetPasswordContext>
 }
+
+public extension TemplateEngine {
+
+    var user: UserModuleTemplate {
+        self.get(UserModuleTemplate.self)
+    }
+}
