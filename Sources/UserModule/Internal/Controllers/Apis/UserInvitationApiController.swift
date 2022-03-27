@@ -16,6 +16,15 @@ extension User.Invitation.Detail: Content {}
 struct UserInvitationApiController: ApiController {
     typealias ApiModel = User.Invitation
     typealias DatabaseModel = UserInvitationModel
+
+    func listQuery(_ req: Request, _ qb: QueryBuilder<DatabaseModel>) async throws -> QueryBuilder<DatabaseModel> {
+        let qb = DatabaseModel.query(on: req.db)
+        let user = try req.getUserAccount()
+        if user.level == .root {
+            return qb
+        }
+        return qb.filter(\.$inviterId == user.id)
+    }
     
     func listOutput(_ req: Request, _ models: [DatabaseModel]) async throws -> [User.Invitation.List] {
         models.map(\.list)

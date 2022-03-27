@@ -22,6 +22,15 @@ struct UserInvitationAdminController: AdminController {
             "email",
         ])
     }
+    
+    func listQuery(_ req: Request, _ qb: QueryBuilder<DatabaseModel>) async throws -> QueryBuilder<DatabaseModel> {
+        let qb = DatabaseModel.query(on: req.db)
+        let user = try req.getUserAccount()
+        if user.level == .root {
+            return qb
+        }
+        return qb.filter(\.$inviterId == user.id)
+    }
 
     func listSearch(_ term: String) -> [ModelValueFilter<DatabaseModel>] {
         [

@@ -187,7 +187,12 @@ struct UserAuthController: AuthController {
                                      password: try Bcrypt.hash(form.password))
         
         try await model.create(on: req.db)
-        let _: [Void] = try await req.invokeAllAsync(.userRegistration, args: ["userId": model.uuid])
+        
+        var arguments = ["userId": model.uuid]
+        if let id = invitation?.inviterId {
+            arguments["inviterId"] = id
+        }
+        let _: [Void] = try await req.invokeAllAsync(.userRegistration, args: arguments)
         
         try await invitation?.delete(on: req.db)
 
