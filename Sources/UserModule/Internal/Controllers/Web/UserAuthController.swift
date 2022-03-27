@@ -23,10 +23,12 @@ struct UserAuthController: AuthController {
                                    links: [
                                     .init(label: "Forgot your password?",
                                           path: "/reset-password/?redirect=/login/",
-                                          absolute: true),
+                                          absolute: true,
+                                          permission: "user.profile.reset-password"),
                                     .init(label: "Create account",
                                           path: "/register/?redirect=/login/",
-                                          absolute: true),
+                                          absolute: true,
+                                          permission: "user.profile.create"),
                                    ],
                                    form: form.context(req))
         let template = req.templateEngine.user.login(ctx)
@@ -199,7 +201,8 @@ struct UserAuthController: AuthController {
                                                        message: "No worries, we'll send you reset instructions.",
                                                        link: .init(label: "Sign in",
                                                                    path: "/login/",
-                                                                   absolute: true),
+                                                                   absolute: true,
+                                                                   permission: "user.profile.login"),
                                                        form: form.context(req)))
         return req.templates.renderHtml(template)
     }
