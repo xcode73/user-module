@@ -45,7 +45,7 @@ struct UserInvitationAdminController: AdminController {
         [
             .init { model, _ in .init("id", model.uuid.string) },
             .init { model, _ in .init("email", model.email) },
-            .init { model, _ in .init("token", model.email) },
+            .init { model, _ in .init("token", model.token) },
             .init { model, _ in .init("expiration", model.expiration.description) },
         ]
     }
@@ -69,42 +69,15 @@ struct UserInvitationAdminController: AdminController {
     
     // MARK: - invitation
     
-    func invitationView(_ req: Request) async throws -> Response {
-        guard req.checkPermission("user.profile.invitation") else {
-            throw Abort(.forbidden)
-        }
-
-        let form = UserInvitationForm()
-        form.fields = form.createFields(req)
-        try await form.load(req: req)
-        return render(req, form: form)
+    func beforeCreate(_ req: Request, _ model: UserInvitationModel) async throws {
+        try await UserInvitationModel.query(on: req.db).filter(\.$email == model.email).delete()
+        
+        model.token = .generateToken()
+        model.expiration = Date().addingTimeInterval(86_400 * 7) // 1 week
+        model.inviterId = try req.getUserAccount().id
     }
     
-    func invitationAction(_ req: Request) async throws -> Response {
-        guard req.checkPermission("user.profile.invitation") else {
-            throw Abort(.forbidden)
-        }
-        let user = try req.getUserAccount()
-        
-        let form = UserInvitationForm()
-        form.fields = form.createFields(req)
-        try await form.load(req: req)
-        try await form.process(req: req)
-        guard try await form.validate(req: req) else {
-            return render(req, form: form)
-        }
-        try await form.write(req: req)
-
-        try await UserInvitationModel.query(on: req.db).filter(\.$email == form.email).delete()
-        // sliding expiration token...
-        let expiration = Date().addingTimeInterval(86_400 * 7) // 1 week
-
-        let model = UserInvitationModel(email: form.email,
-                                        token: .generateToken(),
-                                        expiration: expiration,
-                                        inviterId: user.id)
-        try await model.create(on: req.db)
-        
+    func afterCreate(_ req: Request, _ model: UserInvitationModel) async throws {
         var baseUrl = req.feather.publicUrl + "/"
 //        if isApi, let scheme = try await req.system.variable.find("systemDeepLinkScheme")?.value {
 //            baseUrl = scheme + "://"
@@ -121,14 +94,6 @@ struct UserInvitationAdminController: AdminController {
                                           cc: ["mail.tib@gmail.com", "gurrka@gmail.com", "malacszem92@gmail.com"],
                                           subject: "Invitation",
                                           content: .init(value: html, type: .html)))
-        
-        return req.redirect(to: "/admin/user/accounts/")
-    }
-    
-    func setUpInvitationRoutes(_ routes: RoutesBuilder) {
-        let routes = getBaseRoutes(routes)
-        
-        routes.get("invitation", use: invitationView)
-        routes.post("invitation", use: invitationAction)
+
     }
 }

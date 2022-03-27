@@ -17,7 +17,7 @@ final class UserInvitationModel: FeatherDatabaseModel {
             static var email: FieldKey { "email" }
             static var token: FieldKey { "token" }
             static var expiration: FieldKey { "expiration" }
-            static var inviterId: FieldKey { "expiration" }
+            static var inviterId: FieldKey { "inviter_id" }
         }
     }
     

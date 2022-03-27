@@ -34,22 +34,10 @@ struct UserInvitationEditor: FeatherModelEditor {
             .write { model.email = $1.input }
         
         InputField("token")
-            .config {
-                $0.output.context.label.required = true
-            }
-            .validators {
-                FormFieldValidator.required($1)
-            }
             .read { $1.output.context.value = model.token }
             .write { model.token = $1.input }
         
         InputField("expiration")
-            .config {
-                $0.output.context.label.required = true
-            }
-            .validators {
-                FormFieldValidator.required($1)
-            }
 //            .read { $1.output.context.value = model.email }
 //            .write { model.email = $1.input }
 

@@ -49,9 +49,7 @@ struct UserRouter: FeatherRouter {
     
     func adminRoutesHook(args: HookArguments) {
         accountController.setUpRoutes(args.routes)
-        invitationController.setUpRoutes(args.routes)
-        invitationController.setUpInvitationRoutes(args.routes)
-        
+        invitationController.setUpRoutes(args.routes)        
         roleController.setUpRoutes(args.routes)
         profileController.setUpDetailRoutes(args.routes)
         profileController.setUpUpdateRoutes(args.routes)
