@@ -9,6 +9,7 @@ import Vapor
 import Feather
 import FeatherObjects
 import UserObjects
+import Fluent
 
 extension User.Auth.Response: Content {}
 
@@ -77,8 +78,26 @@ struct UserAuthApiController: AuthController {
     }
     
     func registerApi(req: Request) async throws -> User.Account.Detail {
-        guard try await createProfileAccess(req) else {
+        guard let guest = req.auth.get(FeatherUser.self), guest.level == .guest else {
             throw Abort(.forbidden)
+        }
+        let publicRegistrationAccess = try await createProfileAccess(req)
+        let invitationAccess = try await createProfileInvitationAccess(req)
+        guard publicRegistrationAccess || invitationAccess else {
+            throw Abort(.forbidden)
+        }
+        
+        var invitation: UserInvitationModel?
+        if invitationAccess && !publicRegistrationAccess {
+            guard
+                let invitationToken: String = req.query["invitation"],
+                !invitationToken.isEmpty,
+                let inv = try await UserInvitationModel.query(on: req.db).filter(\.$token == invitationToken).first(),
+                inv.expiration > Date()
+            else {
+                throw Abort(.forbidden)
+            }
+            invitation = inv
         }
         
         try await RequestValidator(User.Account.Create.validators).validate(req)
@@ -87,6 +106,9 @@ struct UserAuthApiController: AuthController {
         model.create(input)
         model.password = try Bcrypt.hash(input.password)
         try await model.create(on: req.db)
+        
+        let _: [Void] = try await req.invokeAllAsync(.userRegistration, args: ["userId": model.uuid])
+        try await invitation?.delete(on: req.db)
         return model.detail
     }
         
