@@ -32,14 +32,5 @@ struct UserInvitationEditor: FeatherModelEditor {
             }
             .read { $1.output.context.value = model.email }
             .write { model.email = $1.input }
-        
-        InputField("token")
-            .read { $1.output.context.value = model.token }
-            .write { model.token = $1.input }
-        
-        InputField("expiration")
-//            .read { $1.output.context.value = model.email }
-//            .write { model.email = $1.input }
-
     }
 }

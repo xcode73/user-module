@@ -66,15 +66,9 @@ public extension User.Invitation {
     
     struct Create: Codable {
         public var email: String
-        public var token: String?
-        public var expiration: Date?
         
-        public init(email: String,
-                    token: String? = nil,
-                    expiration: Date? = nil) {
+        public init(email: String) {
             self.email = email
-            self.token = token
-            self.expiration = expiration
         }
     }
     
@@ -82,15 +76,9 @@ public extension User.Invitation {
     
     struct Update: Codable {
         public var email: String
-        public var token: String
-        public var expiration: Date
-        
-        public init(email: String,
-                    token: String,
-                    expiration: Date) {
+
+        public init(email: String) {
             self.email = email
-            self.token = token
-            self.expiration = expiration
         }
     }
     
@@ -98,15 +86,9 @@ public extension User.Invitation {
     
     struct Patch: Codable {
         public var email: String?
-        public var token: String?
-        public var expiration: Date?
         
-        public init(email: String? = nil,
-                    token: String? = nil,
-                    expiration: Date? = nil) {
+        public init(email: String) {
             self.email = email
-            self.token = token
-            self.expiration = expiration
         }
     }
 }
