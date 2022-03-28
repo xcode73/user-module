@@ -47,6 +47,9 @@ struct UserInvitationApiController: ApiController {
     }
     
     func afterCreate(_ req: Request, _ model: UserInvitationModel) async throws {
+        guard let fromAddress = try await req.system.variable.find("systemEmailAddress")?.value else {
+            return
+        }
         var baseUrl = req.feather.publicUrl + "/"
         if let scheme = try await req.system.variable.find("systemDeepLinkScheme")?.value {
             baseUrl = scheme + "://"
@@ -58,9 +61,9 @@ struct UserInvitationApiController: ApiController {
             <a href="\(baseUrl)register/?invitation=\(model.token)&redirect=/login/">Create account</a>
         """
 
-        _ = try await req.mail.send(.init(from: "noreply@feathercms.com",
+        _ = try await req.mail.send(.init(from: fromAddress,
                                           to: [model.email],
-                                          cc: ["mail.tib@gmail.com", "gurrka@gmail.com", "malacszem92@gmail.com"],
+                                          bcc: ["mail.tib@gmail.com", "gurrka@gmail.com", "malacszem92@gmail.com"],
                                           subject: "Invitation",
                                           content: .init(value: html, type: .html)))
 
