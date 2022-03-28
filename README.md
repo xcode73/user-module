@@ -10,22 +10,22 @@ curl \
 -X POST \
 -H 'Content-Type: application/json' \
 -d '{"email": "root@feathercms.com", "password": "FeatherCMS"}' \
-"http://localhost:8080/api/login/" | jq
+"http://localhost:8080/api/login/" | json_pp
 
 
 curl \
 -X POST \
--H 'Authorization: Bearer QGTW8FAqeK8kRPSoKyIxmlBg8FHJ7hE60zjpiXW3veIKMTg7d6YUYDjAwtfRDMuz' \
+-H 'Authorization: Bearer L7Assd7UukUafUlAA4yoSofnYlAbb0tCWZPiB58RDFChqpG3dxShvdeutp18c2Cw' \
 -H 'Content-Type: application/json' \
 -d '{"name": "lol"}' \
-"http://localhost:8080/api/user/roles/" | jq
+"http://localhost:8080/api/user/roles/" | json_pp
 
 
 curl \
--X POST \
--H 'Authorization: Bearer jTFf4HJ7pxt4fUvLenzWFn7122FaYimI1f1ZZ96eX3I71aQZYr49LZrhbRP37uX4' \
+-X PATCH \
+-H 'Authorization: Bearer L7Assd7UukUafUlAA4yoSofnYlAbb0tCWZPiB58RDFChqpG3dxShvdeutp18c2Cw' \
 -H 'Content-Type: application/json' \
--d '{"email": "elek@testlocalhost.com"}' \
+-d '{"email": "elek3@testlocalhost.com"}' \
 "http://localhost:8080/api/user/invitations/" | json_pp
 
 

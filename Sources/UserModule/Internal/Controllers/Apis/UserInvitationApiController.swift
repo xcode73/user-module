@@ -45,28 +45,17 @@ struct UserInvitationApiController: ApiController {
         model.expiration = Date().addingTimeInterval(86_400 * 7) // 1 week
         model.inviterId = try req.getUserAccount().id
     }
-    
+
     func afterCreate(_ req: Request, _ model: UserInvitationModel) async throws {
-        guard let fromAddress = try await req.system.variable.find("systemEmailAddress")?.value else {
-            return
-        }
-        var baseUrl = req.feather.publicUrl + "/"
-        if let scheme = try await req.system.variable.find("systemDeepLinkScheme")?.value {
-            baseUrl = scheme + "://"
-        }
-
-        let html = """
-            <h1>\(model.email)</h1>
-            <p>\(model.token)</p>
-            <a href="\(baseUrl)register/?invitation=\(model.token)&redirect=/login/">Create account</a>
-        """
-
-        _ = try await req.mail.send(.init(from: fromAddress,
-                                          to: [model.email],
-                                          bcc: ["mail.tib@gmail.com", "gurrka@gmail.com", "malacszem92@gmail.com"],
-                                          subject: "Invitation",
-                                          content: .init(value: html, type: .html)))
-
+        try await UserInvitationEmailController().send(req, model)
+    }
+    
+    func afterUpdate(_ req: Request, _ model: UserInvitationModel) async throws {
+        try await UserInvitationEmailController().send(req, model)
+    }
+    
+    func afterPatch(_ req: Request, _ model: UserInvitationModel) async throws {
+        try await UserInvitationEmailController().send(req, model)
     }
     
     func updateInput(_ req: Request, _ model: DatabaseModel, _ input: User.Invitation.Update) async throws {
