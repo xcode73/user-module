@@ -21,6 +21,12 @@ public struct UserAccountApi {
 
 public extension UserAccountApi {
 
+    func create(_ input: User.Account.Create) async throws -> User.Account.Detail {
+        let model = UserAccountModel()
+        model.create(input)
+        return try await repository.create(model).transform(to: User.Account.Detail.self)
+    }
+    
     func list() async throws -> [User.Account.List] {
         try await repository.list().transform(to: [User.Account.List].self)
     }

@@ -14,6 +14,7 @@ public struct UserInterface {
     private let db: Database
 
     public let account: UserAccountApi
+    public let accountRole: UserAccountRoleApi
     public let role: UserRoleApi
     public let profile: UserProfileApi
     public let invitation: UserInvitationApi
@@ -22,6 +23,7 @@ public struct UserInterface {
         self.db = db
         
         self.account = .init(.init(db))
+        self.accountRole = .init(.init(db))
         self.role = .init(.init(db))
         self.profile = .init(.init(db))
         self.invitation = .init(.init(db))
