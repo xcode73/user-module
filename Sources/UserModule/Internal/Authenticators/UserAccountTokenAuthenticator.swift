@@ -24,7 +24,7 @@ struct UserAccountTokenAuthenticator: AsyncBearerAuthenticator {
         guard let user = try await req.user.account.repository.get(token.accountId) else {
             return
         }
-        let roles = try await req.user.role.repository.findWithPermissions(user.uuid)
+        let roles = try await req.user.role.repository.findWithPermissions(user.uuid, req)
         let isRoot = !roles.filter { $0.key == User.Role.Keys.Root }.isEmpty
         req.auth.login(FeatherUser(id: user.uuid, level: isRoot ? .root : .authenticated, roles: roles))
         // sliding expiration token...

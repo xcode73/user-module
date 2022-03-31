@@ -13,10 +13,10 @@ import FeatherObjects
 struct UserInvitationRepository: FeatherModelRepository {
     typealias DatabaseModel = UserInvitationModel
     
-    private(set) var req: Request
+    private(set) var db: Database
     
-    init(_ req: Request) {
-        self.req = req
+    init(_ db: Database) {
+        self.db = db
     }
 }
 

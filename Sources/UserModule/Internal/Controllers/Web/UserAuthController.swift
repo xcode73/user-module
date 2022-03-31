@@ -83,7 +83,7 @@ struct UserAuthController: AuthController {
             return render(req, form: form)
         }
 
-        let roles = try await req.user.role.repository.findWithPermissions(model.uuid)
+        let roles = try await req.user.role.repository.findWithPermissions(model.uuid, req)
         let isRoot = !roles.filter { $0.key == "root" }.isEmpty
         let user = FeatherUser(id: model.uuid,
                                level: isRoot ? .root : .authenticated,

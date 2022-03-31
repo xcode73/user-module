@@ -94,7 +94,7 @@ struct UserModule: FeatherModule {
         
         let rolePermissions: [User.RolePermission.Create] = args.req.invokeAllFlat(.installUserRolePermissions)
         for rolePermission in rolePermissions {
-            guard let role = try await UserRoleRepository(args.req).find(rolePermission.key) else {
+            guard let role = try await UserRoleRepository(args.req.db).find(rolePermission.key) else {
                 continue
             }
             for permission in rolePermission.permissionKeys {
@@ -108,11 +108,11 @@ struct UserModule: FeatherModule {
         
         let accountRoles: [User.AccountRole.Create] = args.req.invokeAllFlat(.installUserAccountRoles)
         for accountRole in accountRoles {
-            guard let account = try await UserAccountRepository(args.req).find(accountRole.email) else {
+            guard let account = try await UserAccountRepository(args.req.db).find(accountRole.email) else {
                 continue
             }
             for roleKey in accountRole.roleKeys {
-                guard let role = try await UserRoleRepository(args.req).find(roleKey) else {
+                guard let role = try await UserRoleRepository(args.req.db).find(roleKey) else {
                     continue
                 }
                 let arm = UserAccountRoleModel(accountId: account.uuid, roleId: role.uuid)
@@ -207,15 +207,15 @@ struct UserModule: FeatherModule {
     }
     
     func guestRole(args: HookArguments) async throws -> FeatherRole? {
-        try await args.req.user.role.repository.findWithPermissions(User.Role.Keys.Guest)
+        try await args.req.user.role.repository.findWithPermissions(User.Role.Keys.Guest, args.req)
     }
     
     func authenticatedRole(args: HookArguments) async throws -> FeatherRole? {
-        try await args.req.user.role.repository.findWithPermissions(User.Role.Keys.Authenticated)
+        try await args.req.user.role.repository.findWithPermissions(User.Role.Keys.Authenticated, args.req)
     }
     
     func rootRole(args: HookArguments) async throws -> FeatherRole? {
-        try await args.req.user.role.repository.findWithPermissions(User.Role.Keys.Root)
+        try await args.req.user.role.repository.findWithPermissions(User.Role.Keys.Root, args.req)
     }
 
     func adminWidgetsHook(args: HookArguments) -> [TemplateRepresentable] {

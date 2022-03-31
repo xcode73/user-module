@@ -46,14 +46,14 @@ public extension UserAccountApi {
     }
     
     func addRoles(keys: [String], accountId: UUID) async throws {
-        let roleIds = try await repository.req.user.role.repository.find(keys)
-            .map(\.uuid)
+        
+        let roleIds = try await UserRoleRepository(repository.db).find(keys).map(\.uuid)
 
-        try await UserAccountRoleModel.query(on: repository.req.db).filter(\.$roleId ~~ roleIds).delete()
+        try await UserAccountRoleModel.query(on: repository.db).filter(\.$roleId ~~ roleIds).delete()
         
         try await roleIds.map {
             UserAccountRoleModel(accountId: accountId, roleId: $0)
         }
-        .create(on: repository.req.db, chunks: 25)
+        .create(on: repository.db, chunks: 25)
     }
 }

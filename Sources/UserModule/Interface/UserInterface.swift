@@ -6,27 +6,35 @@
 //
 
 import Vapor
+import Fluent
 import Feather
 
 public struct UserInterface {
     
-    private let req: Request
+    private let db: Database
 
     public let account: UserAccountApi
     public let role: UserRoleApi
     public let profile: UserProfileApi
     public let invitation: UserInvitationApi
 
-    init(_ req: Request) {
-        self.req = req
+    init(_ db: Database) {
+        self.db = db
         
-        self.account = .init(.init(req))
-        self.role = .init(.init(req))
-        self.profile = .init(.init(req))
-        self.invitation = .init(.init(req))
+        self.account = .init(.init(db))
+        self.role = .init(.init(db))
+        self.profile = .init(.init(db))
+        self.invitation = .init(.init(db))
     }
 }
 
 public extension Request {
-    var user: UserInterface { .init(self) }
+    var user: UserInterface { .init(db) }
 }
+
+public extension Application {
+    var user: UserInterface { .init(db)}
+}
+
+
+

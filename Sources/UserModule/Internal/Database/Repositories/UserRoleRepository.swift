@@ -13,10 +13,10 @@ import FeatherObjects
 struct UserRoleRepository: FeatherModelRepository {
     typealias DatabaseModel = UserRoleModel
     
-    private(set) var req: Request
+    private(set) var db: Database
     
-    init(_ req: Request) {
-        self.req = req
+    init(_ db: Database) {
+        self.db = db
     }
 }
 
@@ -31,14 +31,14 @@ extension UserRoleRepository {
     }
     
     func permissionIds(_ roleId: UUID) async throws -> [UUID] {
-        try await UserRolePermissionModel.query(on: req.db).filter(\.$roleId == roleId).all().map(\.permissionId)
+        try await UserRolePermissionModel.query(on: db).filter(\.$roleId == roleId).all().map(\.permissionId)
     }
     
-    func findWithPermissions(_ key: String) async throws -> FeatherRole? {
+    func findWithPermissions(_ key: String, _ req: Request) async throws -> FeatherRole? {
         guard let role = try await find(key) else {
             return nil
         }
-        let pids = try await UserRolePermissionModel.query(on: req.db).filter(\.$roleId == role.uuid).all().map(\.permissionId)
+        let pids = try await UserRolePermissionModel.query(on: db).filter(\.$roleId == role.uuid).all().map(\.permissionId)
         let p = try await req.system.permission.get(pids).map {
             FeatherPermission.init(namespace: $0.namespace,
                                    context: $0.context,
@@ -47,14 +47,14 @@ extension UserRoleRepository {
         return FeatherRole(key: role.key, permissions: p)
     }
 
-    func findWithPermissions(_ account: UUID) async throws -> [FeatherRole] {
-        let rids = try await UserAccountRoleModel.query(on: req.db).filter(\.$accountId == account).all().map(\.roleId)
+    func findWithPermissions(_ account: UUID, _ req: Request) async throws -> [FeatherRole] {
+        let rids = try await UserAccountRoleModel.query(on: db).filter(\.$accountId == account).all().map(\.roleId)
         var roles: [FeatherRole] = []
         for r in rids {
-            guard let role = try await UserRoleModel.query(on: req.db).filter(\.$id == r).first() else {
+            guard let role = try await UserRoleModel.query(on: db).filter(\.$id == r).first() else {
                 continue
             }
-            let pids = try await UserRolePermissionModel.query(on: req.db).filter(\.$roleId == r).all().map(\.permissionId)
+            let pids = try await UserRolePermissionModel.query(on: db).filter(\.$roleId == r).all().map(\.permissionId)
             let p = try await req.system.permission.get(pids).map {
                 FeatherPermission.init(namespace: $0.namespace,
                                        context: $0.context,
