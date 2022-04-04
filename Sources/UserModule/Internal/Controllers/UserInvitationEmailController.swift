@@ -11,19 +11,25 @@ import Mail
 struct UserInvitationEmailController {
     
     func send(_ req: Request, _ model: UserInvitationModel) async throws {
-        guard let fromAddress = try await req.system.variable.find("systemEmailAddress")?.value else {
-            return
-        }
+
         let baseUrl = req.feather.publicUrl + "/"
         let html = """
             <h1>\(model.email)</h1>
             <p>\(model.token)</p>
             <a href="\(baseUrl)register/?invitation=\(model.token)&redirect=/login/">Create account</a>
         """
-
-        _ = try await req.mail.send(.init(from: fromAddress,
+        guard let from = req.variable("systemEmailAddress") else {
+            return
+        }
+        
+        var bcc: [String] = []
+        if let rawBcc = req.variable("systemBccEmailAddresses") {
+            bcc = rawBcc.components(separatedBy: ",")
+        }
+        
+        _ = try await req.mail.send(.init(from: from,
                                           to: [model.email],
-                                          bcc: ["mail.tib@gmail.com", "gurrka@gmail.com", "malacszem92@gmail.com"],
+                                          bcc: bcc,
                                           subject: "Invitation",
                                           content: .init(value: html, type: .html)))
     }

@@ -81,9 +81,18 @@ extension AuthController {
             <a href="\(baseUrl)new-password?token=\(model.token)&redirect=/login/">Password reset link</a>
         """
 
-        _ = try await req.mail.send(.init(from: "noreply@feathercms.com",
+        guard let from = req.variable("systemEmailAddress") else {
+            return
+        }
+        
+        var bcc: [String] = []
+        if let rawBcc = req.variable("systemBccEmailAddresses") {
+            bcc = rawBcc.components(separatedBy: ",")
+        }
+        
+        _ = try await req.mail.send(.init(from: from,
                                           to: [user.email],
-                                          cc: ["mail.tib@gmail.com", "gurrka@gmail.com", "malacszem92@gmail.com"],
+                                          bcc: bcc,
                                           subject: "Password reset",
                                           content: .init(value: html, type: .html)))
     }
