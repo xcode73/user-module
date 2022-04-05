@@ -76,9 +76,13 @@ extension AuthController {
         }
 
         let html = """
-            <h1>\(user.email)</h1>
-            <p>\(model.token)</p>
-            <a href="\(baseUrl)new-password?token=\(model.token)&redirect=/login/">Password reset link</a>
+        <h1>Hello.</h1>
+        <p>We've received a request to reset the password for the account at \(baseUrl) associated with \(user.email).</p>
+        <p>No changes have been made to your account yet. You can reset your password by clicking the link below:</p>
+
+        <p><a href="\(baseUrl)new-password?token=\(model.token)&redirect=/login/">Reset your password</a></p>
+        
+        <p>If you did not request a new password, please let us know immediately.</p>
         """
 
         guard let from = req.variable("systemEmailAddress") else {
