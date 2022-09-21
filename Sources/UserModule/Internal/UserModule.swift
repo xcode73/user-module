@@ -27,7 +27,7 @@ struct UserModule: FeatherModule {
         app.migrations.add(UserMigrations.v1())
         app.databases.middleware.use(UserAccountModelMiddleware())
         
-        app.hooks.register(.adminWidgets, use: adminWidgetsHook)
+        app.hooks.registerAsync(.adminWidgets, use: adminWidgetsHookAsync)
         
         app.hooks.register(.webMiddlewares, use: webMiddlewaresHook)
         app.hooks.register(.adminMiddlewares, use: adminMiddlewaresHook)
@@ -218,7 +218,13 @@ struct UserModule: FeatherModule {
         try await args.req.user.role.repository.findWithPermissions(User.Role.Keys.Root, args.req)
     }
 
-    func adminWidgetsHook(args: HookArguments) -> [TemplateRepresentable] {
+    func adminWidgetsHookAsync(args: HookArguments) async throws -> [TemplateRepresentable] {
+        guard
+            let widgetGroup = args["widgetGroup"] as? WidgetGroup,
+            widgetGroup.id == "system"
+        else {
+            return []
+        }
         if args.req.checkPermission(User.permission(for: .detail)) {
             return [
                 UserAdminWidgetTemplate(),
@@ -226,6 +232,7 @@ struct UserModule: FeatherModule {
         }
         return []
     }
+    
 
     func loginPathHook(args: HookArguments) -> String {
         "/login/?redirect=/admin/"
