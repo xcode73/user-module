@@ -35,7 +35,7 @@ struct UserAccountAdminController: AdminController {
     func listColumns() -> [ColumnContext] {
         [
             .init("email"),
-            .init("lastAccess", label: "Last access"),
+            .init("last_access", label: "Last access"),
         ]
     }
     
