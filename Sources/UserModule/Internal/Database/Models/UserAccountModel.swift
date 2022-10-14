@@ -20,6 +20,9 @@ final class UserAccountModel: FeatherDatabaseModel {
             static var email: FieldKey { "email" }
             static var password: FieldKey { "password" }
         }
+        struct v2 {
+            static var lastAccess: FieldKey { "last_access" }
+        }
     }
 
     @ID() var id: UUID?
@@ -28,6 +31,7 @@ final class UserAccountModel: FeatherDatabaseModel {
     @Field(key: FieldKeys.v1.lastName) var lastName: String?
     @Field(key: FieldKeys.v1.email) var email: String
     @Field(key: FieldKeys.v1.password) var password: String
+    @Field(key: FieldKeys.v2.lastAccess) var lastAccess: Date?
     
     init() {}
 
@@ -36,7 +40,8 @@ final class UserAccountModel: FeatherDatabaseModel {
          firstName: String? = nil,
          lastName: String? = nil,
          email: String,
-         password: String)
+         password: String,
+         lastAccess: Date? = nil)
     {
         self.id = id
         self.imageKey = imageKey
@@ -44,5 +49,6 @@ final class UserAccountModel: FeatherDatabaseModel {
         self.lastName = lastName
         self.email = email
         self.password = password
+        self.lastAccess = lastAccess
     }
 }

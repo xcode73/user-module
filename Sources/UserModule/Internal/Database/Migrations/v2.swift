@@ -15,9 +15,17 @@ extension UserMigrations {
             try await db.schema(UserTokenModel.schema)
                 .field(UserTokenModel.FieldKeys.v2.lastAccess, .datetime, .required)
                 .update()
+            
+            try await db.schema(UserAccountModel.schema)
+                .field(UserAccountModel.FieldKeys.v2.lastAccess, .datetime)
+                .update()
         }
         
         func revert(on db: Database) async throws {
+            try await db.schema(UserAccountModel.schema)
+                .deleteField(UserAccountModel.FieldKeys.v2.lastAccess)
+                .update()
+            
             try await db.schema(UserTokenModel.schema)
                 .deleteField(UserTokenModel.FieldKeys.v2.lastAccess)
                 .update()
