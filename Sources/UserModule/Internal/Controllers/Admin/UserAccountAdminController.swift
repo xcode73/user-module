@@ -20,6 +20,7 @@ struct UserAccountAdminController: AdminController {
     var listConfig: ListConfiguration {
         .init(allowedOrders: [
             "email",
+            "lastAccess",
         ])
     }
 
@@ -34,12 +35,14 @@ struct UserAccountAdminController: AdminController {
     func listColumns() -> [ColumnContext] {
         [
             .init("email"),
+            .init("lastAccess", label: "Last access"),
         ]
     }
     
     func listCells(for model: DatabaseModel) -> [CellContext] {
         [
-            .link(model.email, ApiModel.permission(for: .detail))
+            .link(model.email, ApiModel.permission(for: .detail)),
+            .link(model.formattedLastAccess, ApiModel.permission(for: .detail)),
         ]
     }
     
@@ -50,6 +53,7 @@ struct UserAccountAdminController: AdminController {
             .init { model, _ in .init("firstName", model.firstName, label: "First name") },
             .init { model, _ in .init("lastName", model.lastName, label: "Last name") },
             .init { model, _ in .init("email", model.email) },
+            .init { model, _ in .init("lastAccess", model.formattedLastAccess, label: "Last access") },
             .init { model, req in
                 let ids = try await req.user.account.repository.roleIds(model.uuid)
                 let objects = try await req.user.role.repository.get(ids)

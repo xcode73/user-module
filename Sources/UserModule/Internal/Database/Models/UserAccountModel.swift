@@ -52,3 +52,13 @@ final class UserAccountModel: FeatherDatabaseModel {
         self.lastAccess = lastAccess
     }
 }
+
+extension UserAccountModel {
+
+    var formattedLastAccess: String {
+        guard let lastAccess else {
+            return "n/a"
+        }
+        return Feather.dateFormatter().string(from: lastAccess)
+    }
+}
