@@ -14,7 +14,7 @@ extension UserMigrations {
         func prepare(on db: Database) async throws {
             try await db.schema(UserTokenModel.schema)
                 .field(UserTokenModel.FieldKeys.v2.lastAccess, .datetime, .required)
-                .create()
+                .update()
         }
         
         func revert(on db: Database) async throws {
