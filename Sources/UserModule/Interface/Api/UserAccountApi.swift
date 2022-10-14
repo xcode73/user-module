@@ -51,6 +51,10 @@ public extension UserAccountApi {
         try await list().map { .init(key: $0.id.string, label: $0.email) }
     }
     
+    func lastAccess(_ id: UUID) async throws -> Date? {
+        try await repository.lastAccess(id)
+    }
+
     func addRoles(keys: [String], accountId: UUID) async throws {
         
         let roleIds = try await UserRoleRepository(repository.db).find(keys).map(\.uuid)

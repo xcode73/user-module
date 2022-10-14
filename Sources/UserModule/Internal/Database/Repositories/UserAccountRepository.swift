@@ -37,4 +37,11 @@ extension UserAccountRepository {
         try await UserAccountRoleModel.query(on: db).filter(\.$accountId == accountId).delete()
         try await roleIds.map { UserAccountRoleModel(accountId: accountId, roleId: $0) }.create(on: db)
     }
+    
+    func lastAccess(_ accountId: UUID) async throws -> Date? {
+        try await UserTokenModel.query(on: db)
+            .filter(\.$accountId == accountId)
+            .sort(\.$lastAccess, .descending)
+            .first()?.lastAccess
+    }
 }
