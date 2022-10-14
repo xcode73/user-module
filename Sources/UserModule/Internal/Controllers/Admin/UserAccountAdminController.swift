@@ -20,7 +20,7 @@ struct UserAccountAdminController: AdminController {
     var listConfig: ListConfiguration {
         .init(allowedOrders: [
             "email",
-            "lastAccess",
+            "last_access",
         ])
     }
 
