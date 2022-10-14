@@ -27,7 +27,8 @@ struct UserAccountTokenAuthenticator: AsyncBearerAuthenticator {
         let roles = try await req.user.role.repository.findWithPermissions(user.uuid, req)
         let isRoot = !roles.filter { $0.key == User.Role.Keys.Root }.isEmpty
         req.auth.login(FeatherUser(id: user.uuid, level: isRoot ? .root : .authenticated, roles: roles))
-        // sliding expiration token...
+        // update token last access & expiration date...
+        token.lastAccess = now
         token.expiration = now.addingTimeInterval(86_400 * 7)
         try await token.update(on: req.db)
     }

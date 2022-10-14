@@ -64,8 +64,9 @@ struct UserAuthApiController: AuthController {
                                roles: roles)
         
         let value = String.generateToken()
-        let exp = Date().addingTimeInterval(86_400 * 7) // one week
-        let token = UserTokenModel(value: value, accountId: user.id, expiration: exp)
+        let now = Date()
+        let exp = now.addingTimeInterval(86_400 * 7) // one week
+        let token = UserTokenModel(value: value, accountId: user.id, lastAccess: now, expiration: exp)
         try await token.create(on: req.db)
         
         guard let account = try await req.user.account.get(user.id) else {

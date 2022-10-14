@@ -25,6 +25,8 @@ struct UserModule: FeatherModule {
         app.templateEngine.register(template)
 
         app.migrations.add(UserMigrations.v1())
+        app.migrations.add(UserMigrations.v2())
+
         app.databases.middleware.use(UserAccountModelMiddleware())
         
         app.hooks.registerAsync(.adminWidgets, use: adminWidgetsHookAsync)
