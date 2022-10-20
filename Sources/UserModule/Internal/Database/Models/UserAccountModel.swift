@@ -33,7 +33,12 @@ final class UserAccountModel: FeatherDatabaseModel {
     @Field(key: FieldKeys.v1.password) var password: String
     @Field(key: FieldKeys.v2.lastAccess) var lastAccess: Date?
     
-    init() {}
+    init() {
+        self.imageKey = nil
+        self.firstName = nil
+        self.lastName = nil
+        self.lastAccess = nil
+    }
 
     init(id: UUID? = nil,
          imageKey: String? = nil,
