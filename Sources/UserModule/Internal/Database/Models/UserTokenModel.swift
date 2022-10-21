@@ -29,7 +29,7 @@ final class UserTokenModel: FeatherDatabaseModel {
     @Field(key: FieldKeys.v2.lastAccess) var lastAccess: Date
     @Field(key: FieldKeys.v1.accountId) var accountId: UUID
 
-    init() { }
+    init() {}
     
     init(id: UUID? = nil,
          value: String,

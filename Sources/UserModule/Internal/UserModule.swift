@@ -221,12 +221,6 @@ struct UserModule: FeatherModule {
     }
 
     func adminWidgetsHookAsync(args: HookArguments) async throws -> [TemplateRepresentable] {
-        guard
-            let widgetGroup = args["widgetGroup"] as? WidgetGroup,
-            widgetGroup.id == "system"
-        else {
-            return []
-        }
         if args.req.checkPermission(User.permission(for: .detail)) {
             return [
                 UserAdminWidgetTemplate(),
