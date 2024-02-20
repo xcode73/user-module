@@ -4,7 +4,7 @@ import PackageDescription
 let package = Package(
     name: "user-module",
     platforms: [
-       .macOS(.v12)
+        .macOS(.v10_15)
     ],
     products: [
         .library(name: "UserModule", targets: ["UserModule"]),
