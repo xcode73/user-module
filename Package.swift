@@ -10,8 +10,11 @@ let package = Package(
         .library(name: "UserModule", targets: ["UserModule"])
     ],
     dependencies: [
-        .package(url: "https://github.com/xcode73/feather-core.git", branch: "test-dev"),
-        .package(url: "https://github.com/xcode73/user-objects.git", branch: "test-dev")
+        //local
+        .package(path: "../feather-core"),
+        .package(path: "../user-objects"),
+//        .package(url: "https://github.com/xcode73/feather-core.git", branch: "test-dev"),
+//        .package(url: "https://github.com/xcode73/user-objects.git", branch: "test-dev")
     ],
     targets: [
         .target(name: "UserModule",
